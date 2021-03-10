@@ -5,6 +5,8 @@ import 'package:trip_planner/presentation/trip/list/bloc/trip_list_state.dart';
 class TripListCubit extends Cubit<TripListState> {
   final TripService _tripService;
 
+
+
   TripListCubit(this._tripService) : super(TripListInitial());
 
   Future<void> getAll() async {

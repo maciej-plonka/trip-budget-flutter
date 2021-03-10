@@ -15,7 +15,7 @@ class TripModel {
         assert(startDate.isBefore(endDate));
 
   @override
-  int get hashCode => name.hashCode ^ startDate.hashCode ^ endDate.hashCode;
+  int get hashCode => id.hashCode;
 
   @override
   bool operator ==(Object other) {

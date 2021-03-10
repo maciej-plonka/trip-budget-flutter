@@ -7,7 +7,7 @@ import 'package:trip_planner/domain/trip/trip_service.dart';
 import 'package:trip_planner/domain/trip/trip_service_impl.dart';
 import 'package:trip_planner/presentation/trip/list/bloc/trip_list_cubit.dart';
 
-final dependencies = GetIt();
+final dependencies = GetIt.instance;
 
 void setupDependencies(AppDatabase database){
   dependencies.registerLazySingleton<TripDao>(() => database.tripDao);
