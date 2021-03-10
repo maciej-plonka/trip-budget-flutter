@@ -9,12 +9,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../pages/trip/trip_home_page.dart';
+import '../trip/list/ui/trip_home_page.dart';
 
 class Routes {
-  static const String tripHomePage = '/';
+  static const String tripListPage = '/';
   static const all = <String>{
-    tripHomePage,
+    tripListPage,
   };
 }
 
@@ -22,14 +22,14 @@ class AutomaticRouter extends RouterBase {
   @override
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
-    RouteDef(Routes.tripHomePage, page: TripHomePage),
+    RouteDef(Routes.tripListPage, page: TripListPage),
   ];
   @override
   Map<Type, AutoRouteFactory> get pagesMap => _pagesMap;
   final _pagesMap = <Type, AutoRouteFactory>{
-    TripHomePage: (data) {
+    TripListPage: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => TripHomePage(),
+        builder: (context) => TripListPage(),
         settings: data,
       );
     },

@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:trip_planner/domain/trip/trip_model.dart';
 
-class Trip {
-  final String name;
-  final DateTime startDate;
-  final DateTime endDate;
+class TripListCard extends StatelessWidget {
+  final TripModel trip;
 
-  Trip({@required this.startDate, @required this.endDate, @required this.name});
-}
-
-class TripHomeCard extends StatelessWidget {
-  final Trip trip;
-
-  const TripHomeCard({Key key, @required this.trip}) : super(key: key);
+  const TripListCard({Key key, @required this.trip}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +27,7 @@ class TripHomeCard extends StatelessWidget {
 }
 
 class _TripHomeCardImage extends StatelessWidget {
-  final Trip trip;
+  final TripModel trip;
 
   const _TripHomeCardImage({Key key, this.trip}) : super(key: key);
 
@@ -53,7 +46,7 @@ class _TripHomeCardImage extends StatelessWidget {
 }
 
 class _TripHomeCardDescription extends StatelessWidget {
-  final Trip trip;
+  final TripModel trip;
 
   const _TripHomeCardDescription({Key key, this.trip}) : super(key: key);
 

@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:trip_planner/presentation/pages/trip/trip_home_card.dart';
 
-class TripHomePage extends StatelessWidget {
-  final Trip _trip = Trip(
-      name: "Trip test",
-      startDate: DateTime.now().add(Duration(days: 1)),
-      endDate: DateTime.now().add(Duration(days: 2)));
+class TripListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +18,7 @@ class TripHomePage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [TripHomeCard(trip: _trip)],
+          children: [],
         ),
       ),
     );
