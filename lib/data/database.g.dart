@@ -80,7 +80,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Trip` (`id` INTEGER, `name` TEXT, `startDateTime` INTEGER, `endDateTime` INTEGER, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `Trip` (`id` INTEGER, `name` TEXT, `startDateTime` INTEGER, `endDateTime` INTEGER, `imageUrl` TEXT, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -104,7 +104,8 @@ class _$TripDao extends TripDao {
                   'id': item.id,
                   'name': item.name,
                   'startDateTime': item.startDateTime,
-                  'endDateTime': item.endDateTime
+                  'endDateTime': item.endDateTime,
+                  'imageUrl': item.imageUrl
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -119,10 +120,11 @@ class _$TripDao extends TripDao {
   Future<List<Trip>> findAll() async {
     return _queryAdapter.queryList('SELECT * FROM Trip',
         mapper: (Map<String, dynamic> row) => Trip(
-            row['id'] as int,
-            row['name'] as String,
-            row['startDateTime'] as int,
-            row['endDateTime'] as int));
+            id: row['id'] as int,
+            name: row['name'] as String,
+            startDateTime: row['startDateTime'] as int,
+            endDateTime: row['endDateTime'] as int,
+            imageUrl: row['imageUrl'] as String));
   }
 
   @override

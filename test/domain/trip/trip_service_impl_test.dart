@@ -15,7 +15,7 @@ void main() {
     test("should return empty list when repository returns empty list",
         () async {
       //given
-      when(repository.findAll()).thenAnswer((_) => Future.value([]));
+      when(repository.findAll()).thenAnswer((_) async => []);
       final classUnderTest = TripServiceImpl(repository);
       //when
       final result = await classUnderTest.findAll();
@@ -25,7 +25,7 @@ void main() {
     test("should return same trips as repository", () async {
       //given
       final list = [_createValidTripModel()];
-      when(repository.findAll()).thenAnswer((_) => Future.value(list));
+      when(repository.findAll()).thenAnswer((_) async => list);
       final classUnderTest = TripServiceImpl(repository);
       //when
       final result = await classUnderTest.findAll();

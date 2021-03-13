@@ -2,9 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:trip_planner/data/database_init.dart';
+import 'package:trip_planner/dependencies/dependencies.dart';
 import 'package:trip_planner/presentation/router/router.gr.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final database = await prepareDatabase("app_database.db");
+  setupDependencies(database);
   runApp(MyApp());
 }
 
@@ -28,7 +33,7 @@ class MyApp extends StatelessWidget {
             ),
           ),
         ),
-        backgroundColor: Color(0xFFEEEEEE),
+        backgroundColor: Color(0xFFEEF1F5),
       ),
       builder: ExtendedNavigator.builder<AutomaticRouter>(
           router: AutomaticRouter(),

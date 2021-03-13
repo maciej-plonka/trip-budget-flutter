@@ -19,16 +19,27 @@ class TripDatabaseRepository implements TripRepository {
         id: trip.id,
         name: trip.name,
         startDate: DateTime.fromMicrosecondsSinceEpoch(trip.startDateTime),
-        endDate: DateTime.fromMicrosecondsSinceEpoch(trip.endDateTime)
-    );
+        endDate: DateTime.fromMicrosecondsSinceEpoch(trip.endDateTime),
+        imageUrl: trip.imageUrl);
   }
 
   Trip _mapModelToEntity(TripModel model) {
     return Trip(
-      model.id,
-      model.name,
-      model.startDate.microsecondsSinceEpoch,
-      model.endDate.microsecondsSinceEpoch,
+        id: model.id,
+        name: model.name,
+        startDateTime: model.startDate.microsecondsSinceEpoch,
+        endDateTime: model.endDate.microsecondsSinceEpoch,
+        imageUrl: model.imageUrl
     );
+  }
+
+  @override
+  Future<void> create(TripModel tripModel) async {
+    await _tripDao.insertTrip(_mapModelToEntity(tripModel));
+  }
+
+  @override
+  Future<void> update(TripModel tripModel) async {
+    await _tripDao.insertTrip(_mapModelToEntity(tripModel));
   }
 }
