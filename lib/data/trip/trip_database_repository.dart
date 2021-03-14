@@ -35,7 +35,7 @@ class TripDatabaseRepository implements TripRepository {
 
   @override
   Future<void> create(TripModel tripModel) async {
-    await _tripDao.insertTrip(_mapModelToEntity(tripModel));
+    return _tripDao.insertTrip(_mapModelToEntity(tripModel));
   }
 
   @override

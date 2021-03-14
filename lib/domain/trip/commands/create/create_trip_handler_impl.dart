@@ -16,7 +16,7 @@ class CreateTripHandlerImpl implements CreateTripHandler {
       endDate: createTrip.endDate,
       imageUrl: createTrip.imageUrl
     );
-    await _tripRepository.create(tripModel);
+    return _tripRepository.create(tripModel);
   }
 
 }

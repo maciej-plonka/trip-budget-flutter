@@ -94,7 +94,7 @@ class _TripNewFormState extends State<TripNewForm> {
     final createTrip =
         CreateTrip(name: _name, startDate: _startDate, endDate: _endDate, imageUrl: _imageUrl);
     await _createTripHandler.createTrip(createTrip);
-    _onCreated?.call();
+    _onCreated.call();
   }
 }
 

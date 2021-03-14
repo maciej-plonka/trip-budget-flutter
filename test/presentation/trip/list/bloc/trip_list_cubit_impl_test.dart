@@ -17,7 +17,7 @@ void main() {
     blocTest(
       "should not return state after creation",
       build: () => TripListCubitImpl(tripService),
-      expect: [],
+      expect:() =>  [],
     );
 
     blocTest(
@@ -27,7 +27,7 @@ void main() {
         return TripListCubitImpl(tripService);
       },
       act: (TripListCubit cubit) => cubit.getAll(),
-      expect: [isA<TripListLoading>(), isA<TripListLoaded>()],
+      expect:() => [isA<TripListLoading>(), isA<TripListLoaded>()],
     );
 
     final listOfTripModels = [_createValidModel()];
@@ -39,7 +39,7 @@ void main() {
         return TripListCubitImpl(tripService);
       },
       act: (TripListCubit cubit) => cubit.getAll(),
-      expect: [isA<TripListLoading>(), TripListLoaded(listOfTripModels)],
+      expect:() => [isA<TripListLoading>(), TripListLoaded(listOfTripModels)],
     );
   });
 }
