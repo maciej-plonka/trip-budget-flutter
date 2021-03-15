@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trip_planner/dependencies/dependencies.dart';
 import 'package:trip_planner/domain/trip/trip_model.dart';
-import 'package:trip_planner/presentation/router/route_generator.dart';
+import 'package:trip_planner/presentation/router/navigator_state_extensions.dart';
 import 'package:trip_planner/presentation/trip/list/bloc/trip_list_cubit.dart';
 import 'package:trip_planner/presentation/trip/list/bloc/trip_list_cubit_impl.dart';
 import 'package:trip_planner/presentation/trip/list/bloc/trip_list_state.dart';
@@ -31,7 +31,7 @@ class TripListPage extends StatelessWidget  {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async  {
-           await Navigator.of(context).pushNamed(Routes.tripNew);
+           await Navigator.of(context).pushTripNew();
            await _cubit.getAll();
         },
         child: const Icon(Icons.add),
@@ -45,11 +45,11 @@ class TripListPage extends StatelessWidget  {
 
   Widget _buildTripList(List<TripModel> trips) {
     return ListView.builder(
+      itemCount: trips.length,
       itemBuilder: (context, index) => Padding(
         padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
         child: TripListCard(trip: trips[index]),
       ),
-      itemCount: trips.length,
     );
   }
 
