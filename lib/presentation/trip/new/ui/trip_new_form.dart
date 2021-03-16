@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:trip_planner/dependencies/dependencies.dart';
 import 'package:trip_planner/domain/trip/commands/create/create_trip.dart';
 import 'package:trip_planner/domain/trip/commands/create/create_trip_handler.dart';
-import 'package:trip_planner/presentation/form/date_picker_form_field.dart';
-import 'package:trip_planner/presentation/form/image_picker_form_field.dart';
+import 'package:trip_planner/presentation/linear_gradients.dart';
+import 'package:trip_planner/presentation/widgets/button/gradient_button.dart';
+import 'package:trip_planner/presentation/widgets/form/date_picker_form_field.dart';
+import 'package:trip_planner/presentation/widgets/form/image_picker_form_field.dart';
 
 class TripNewForm extends StatefulWidget {
   final Function onCreated;
@@ -71,11 +73,22 @@ class _TripNewFormState extends State<TripNewForm> {
                         validator: _createEndDateValidator(_startDateKey)),
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0),
-                      child: RaisedButton(
+                      child: GradientButton(
                         onPressed: _handleSubmit,
-                        child: Text("Create",
-                            style: const TextStyle(color: Colors.white)),
-                        color: Theme.of(context).primaryColor,
+                        gradient: LinearGradients.primary,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Padding(
+                              padding: const EdgeInsets.only(right: 4.0),
+                              child: const Icon(Icons.check, color: Colors.white, size: 18.0),
+                            ),
+                            const Padding(
+                              padding: const EdgeInsets.only(left: 4.0),
+                              child: const Text("Create",style: TextStyle(color: Colors.white)),
+                            ),
+                          ],
+                        ),
                       ),
                     )
                   ],
