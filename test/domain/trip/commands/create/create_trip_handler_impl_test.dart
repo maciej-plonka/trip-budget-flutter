@@ -1,11 +1,15 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:trip_planner/domain/trip/commands/create/create_trip.dart';
 import 'package:trip_planner/domain/trip/commands/create/create_trip_handler_impl.dart';
-import 'package:trip_planner/domain/trip/trip_repository.dart';
+import 'package:trip_planner/domain/trip/repository/trip_repository.dart';
 
+import 'create_trip_handler_impl_test.mocks.dart';
+
+@GenerateMocks([TripRepository])
 void main() {
-  final tripRepository = _TripRepositoryMock();
+  final tripRepository = MockTripRepository();
 
   setUp(() => reset(tripRepository));
 
@@ -49,7 +53,7 @@ void main() {
     test("should properly pass null imageUrl of a trip to TripModel", () async {
       //given
       when(tripRepository.create(any)).thenAnswer((_) => Future.value());
-      String nullImageUrl = null;
+      String? nullImageUrl;
       final createTrip = CreateTrip(name: "Trip Name", startDate: DateTime(2020), endDate:DateTime(2021), imageUrl: nullImageUrl);
       final classUnderTest = CreateTripHandlerImpl(tripRepository);
       //when
@@ -72,4 +76,3 @@ void main() {
   });
 }
 
-class _TripRepositoryMock extends Mock implements TripRepository {}

@@ -1,13 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:trip_planner/presentation/trip/list/ui/trip_list_page.dart';
-import 'package:trip_planner/presentation/trip/new/ui/trip_new_page.dart';
-
+import 'package:trip_planner/presentation/trip/pages/details/trip_details_page.dart';
+import 'package:trip_planner/presentation/trip/pages/edit/trip_edit_page.dart';
+import 'package:trip_planner/presentation/trip/pages/list/trip_list_page.dart';
+import 'package:trip_planner/presentation/trip/pages/new/trip_new_page.dart';
 
 class Routes {
   static const tripList = "/";
-  static const tripNew = "/new";
+  static const tripNew = "/trip/new";
+  static const tripDetails = "/trip/details";
+  static const tripEdit = "/trip/edit";
 }
 
 class RouteGenerator {
@@ -18,19 +19,27 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => TripListPage());
       case Routes.tripNew:
         return MaterialPageRoute(builder: (_) => TripNewPage());
+      case Routes.tripDetails:
+        if (args is int)
+          return MaterialPageRoute(builder: (_) => TripDetailsPage(tripId: args));
+        return _error("TripDetailsPage requires tripId");
+      case Routes.tripEdit:
+        if (args is int)
+          return MaterialPageRoute(builder: (_) => TripEditPage(tripId: args));
+        return _error("TripEditPage requires tripId");
     }
-    return MaterialPageRoute(
-        builder: (_) => _ErrorPage(message: "Unknown route: ${settings.name}"));
+    return _error("Unknown route: ${settings.name}");
+  }
+
+  static MaterialPageRoute<dynamic> _error(String message) {
+    return MaterialPageRoute(builder: (_) => _ErrorPage(message: message));
   }
 }
-
 
 class _ErrorPage extends StatelessWidget {
   final String message;
 
-  const _ErrorPage({Key key, @required this.message})
-      : assert(message != null),
-        super(key: key);
+  const _ErrorPage({Key? key, required this.message}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +48,10 @@ class _ErrorPage extends StatelessWidget {
         title: Text("Error"),
       ),
       body: Center(
-        child: Text("$message", style: TextStyle(
-          color: Colors.red,
-          fontStyle: FontStyle.italic
-        ),),
+        child: Text(
+          "$message",
+          style: TextStyle(color: Colors.red, fontStyle: FontStyle.italic),
+        ),
       ),
     );
   }

@@ -3,13 +3,12 @@ import 'package:trip_planner/presentation/linear_gradients.dart';
 
 class GradientFloatingActionButton extends FloatingActionButton {
   GradientFloatingActionButton({
-    Key key,
-    Widget child,
-    @required VoidCallback onPressed,
-    @required Gradient gradient,
+    Key? key,
+    Widget? child,
+    required VoidCallback onPressed,
+    required Gradient gradient,
   })
-      : assert(gradient != null),
-        super(
+      : super(
           key: key,
           onPressed: onPressed,
           child: Container(
@@ -23,8 +22,7 @@ class GradientFloatingActionButton extends FloatingActionButton {
           ));
 
   static GradientFloatingActionButton primary(
-      {@required VoidCallback onPressed}) {
-    assert(onPressed != null);
+      {required VoidCallback onPressed}) {
     return GradientFloatingActionButton(
       onPressed: onPressed,
       gradient: LinearGradients.primary,

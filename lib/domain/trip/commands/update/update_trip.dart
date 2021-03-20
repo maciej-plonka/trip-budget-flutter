@@ -1,18 +1,20 @@
 import 'package:equatable/equatable.dart';
 
-class CreateTrip extends Equatable {
+class UpdateTrip extends Equatable {
+  final int id;
   final String name;
   final DateTime startDate;
   final DateTime endDate;
   final String? imageUrl;
 
-  CreateTrip(
-      {required this.name,
+  UpdateTrip(
+      {required this.id,
+      required this.name,
       required this.startDate,
       required this.endDate,
       this.imageUrl})
       : assert(endDate.isAfter(startDate));
 
   @override
-  List<Object?> get props => [name, startDate, endDate, imageUrl];
+  List<Object?> get props => [id,name, startDate, endDate, imageUrl];
 }

@@ -1,15 +1,17 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:trip_planner/data/trip/trip.dart';
 import 'package:trip_planner/data/trip/trip_dao.dart';
 import 'package:trip_planner/data/trip/trip_database_repository.dart';
-import 'package:trip_planner/domain/trip/trip_model.dart';
+import 'package:trip_planner/domain/trip/repository/trip_model.dart';
 
+import 'trip_database_repository_test.mocks.dart';
+
+@GenerateMocks([TripDao])
 void main() {
-  final tripDao = _TripDaoMock();
+  final tripDao = MockTripDao();
 
   setUp(() => reset(tripDao));
-
   group("TripDatabaseRepository findAll()", () {
     test("return empty list when there is no trip", () async {
       //given
@@ -26,7 +28,6 @@ void main() {
     test("creating new trip should correctly map startDate to microseconds",
         () async {
       //given
-      when(tripDao.insertTrip(any)).thenAnswer((_) => Future.value());
       final classUnderTest = TripDatabaseRepository(tripDao);
       final startDate = DateTime(2020);
       final endDate = DateTime(startDate.year + 1);
@@ -35,24 +36,24 @@ void main() {
       //when
       await classUnderTest.create(trip);
       //then
-      expect(verify(tripDao.insertTrip(captureAny)).captured.single.startDateTime, startDate.microsecondsSinceEpoch);
+      expect(
+          verify(tripDao.insertTrip(captureAny)).captured.single.startDateTime,
+          startDate.microsecondsSinceEpoch);
     });
 
     test("creating new trip should correctly map startDate to microseconds",
-            () async {
-          //given
-          when(tripDao.insertTrip(any)).thenAnswer((_) => Future.value());
-          final classUnderTest = TripDatabaseRepository(tripDao);
-          final startDate = DateTime(2020);
-          final endDate = DateTime(startDate.year + 1);
-          final trip =
+        () async {
+      //given
+      final classUnderTest = TripDatabaseRepository(tripDao);
+      final startDate = DateTime(2020);
+      final endDate = DateTime(startDate.year + 1);
+      final trip =
           TripModel(name: "Trip", startDate: startDate, endDate: endDate);
-          //when
-          await classUnderTest.create(trip);
-          //then
-          expect(verify(tripDao.insertTrip(captureAny)).captured.single.endDateTime, endDate.microsecondsSinceEpoch);
-        });
+      //when
+      await classUnderTest.create(trip);
+      //then
+      expect(verify(tripDao.insertTrip(captureAny)).captured.single.endDateTime,
+          endDate.microsecondsSinceEpoch);
+    });
   });
 }
-
-class _TripDaoMock extends Mock implements TripDao {}

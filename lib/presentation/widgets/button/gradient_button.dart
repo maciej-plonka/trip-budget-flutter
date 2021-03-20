@@ -6,26 +6,23 @@ class GradientButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Widget child;
   final Gradient gradient;
-  final BoxShape boxShape;
-  final EdgeInsetsGeometry padding;
-  final BorderRadiusGeometry borderRadius;
-  final double width;
-  final double height;
+  final BoxShape? boxShape;
+  final EdgeInsetsGeometry? padding;
+  final BorderRadiusGeometry? borderRadius;
+  final double? width;
+  final double? height;
 
   const GradientButton({
-    Key key,
-    @required this.onPressed,
-    @required this.child,
-    @required this.gradient,
+    Key? key,
+    required this.onPressed,
+    required this.child,
+    required this.gradient,
     this.boxShape,
     this.padding,
     this.borderRadius,
     this.width,
     this.height,
-  })  : assert(onPressed != null),
-        assert(child != null),
-        assert(gradient != null),
-        super(key: key);
+  })  : super(key: key);
 
   @override
   Widget build(BuildContext context) {

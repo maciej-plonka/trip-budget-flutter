@@ -22,11 +22,11 @@ class $FloorAppDatabase {
 class _$AppDatabaseBuilder {
   _$AppDatabaseBuilder(this.name);
 
-  final String name;
+  final String? name;
 
   final List<Migration> _migrations = [];
 
-  Callback _callback;
+  Callback? _callback;
 
   /// Adds migrations to the builder.
   _$AppDatabaseBuilder addMigrations(List<Migration> migrations) {
@@ -43,7 +43,7 @@ class _$AppDatabaseBuilder {
   /// Creates the database and initializes it.
   Future<AppDatabase> build() async {
     final path = name != null
-        ? await sqfliteDatabaseFactory.getDatabasePath(name)
+        ? await sqfliteDatabaseFactory.getDatabasePath(name!)
         : ':memory:';
     final database = _$AppDatabase();
     database.database = await database.open(
@@ -56,14 +56,14 @@ class _$AppDatabaseBuilder {
 }
 
 class _$AppDatabase extends AppDatabase {
-  _$AppDatabase([StreamController<String> listener]) {
+  _$AppDatabase([StreamController<String>? listener]) {
     changeListener = listener ?? StreamController<String>.broadcast();
   }
 
-  TripDao _tripDaoInstance;
+  TripDao? _tripDaoInstance;
 
   Future<sqflite.Database> open(String path, List<Migration> migrations,
-      [Callback callback]) async {
+      [Callback? callback]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
       version: 1,
       onConfigure: (database) async {
@@ -80,7 +80,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Trip` (`id` INTEGER, `name` TEXT, `startDateTime` INTEGER, `endDateTime` INTEGER, `imageUrl` TEXT, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `Trip` (`id` INTEGER, `name` TEXT NOT NULL, `startDateTime` INTEGER NOT NULL, `endDateTime` INTEGER NOT NULL, `imageUrl` TEXT, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -100,7 +100,7 @@ class _$TripDao extends TripDao {
         _tripInsertionAdapter = InsertionAdapter(
             database,
             'Trip',
-            (Trip item) => <String, dynamic>{
+            (Trip item) => <String, Object?>{
                   'id': item.id,
                   'name': item.name,
                   'startDateTime': item.startDateTime,
@@ -119,12 +119,24 @@ class _$TripDao extends TripDao {
   @override
   Future<List<Trip>> findAll() async {
     return _queryAdapter.queryList('SELECT * FROM Trip',
-        mapper: (Map<String, dynamic> row) => Trip(
-            id: row['id'] as int,
+        mapper: (Map<String, Object?> row) => Trip(
+            id: row['id'] as int?,
             name: row['name'] as String,
             startDateTime: row['startDateTime'] as int,
             endDateTime: row['endDateTime'] as int,
-            imageUrl: row['imageUrl'] as String));
+            imageUrl: row['imageUrl'] as String?));
+  }
+
+  @override
+  Future<Trip?> findById(int tripId) async {
+    return _queryAdapter.query('SELECT * FROM Trip where id = ?',
+        arguments: [tripId],
+        mapper: (Map<String, Object?> row) => Trip(
+            id: row['id'] as int?,
+            name: row['name'] as String,
+            startDateTime: row['startDateTime'] as int,
+            endDateTime: row['endDateTime'] as int,
+            imageUrl: row['imageUrl'] as String?));
   }
 
   @override

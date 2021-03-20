@@ -1,7 +1,7 @@
 import 'package:trip_planner/domain/trip/commands/create/create_trip.dart';
 import 'package:trip_planner/domain/trip/commands/create/create_trip_handler.dart';
-import 'package:trip_planner/domain/trip/trip_model.dart';
-import 'package:trip_planner/domain/trip/trip_repository.dart';
+import 'package:trip_planner/domain/trip/repository/trip_model.dart';
+import 'package:trip_planner/domain/trip/repository/trip_repository.dart';
 
 class CreateTripHandlerImpl implements CreateTripHandler {
   final TripRepository _tripRepository;

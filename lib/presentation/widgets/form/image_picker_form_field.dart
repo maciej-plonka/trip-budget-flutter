@@ -7,13 +7,13 @@ import 'package:image_picker/image_picker.dart';
 
 class ImagePickerFormField extends FormField<String> {
   ImagePickerFormField(
-      {Key key,
-      String initialValue,
-      Decoration backgroundDecoration,
-      double height,
-        double width,
-      CropAspectRatio aspectRatio,
-      FormFieldSetter<String> onSaved})
+      {Key? key,
+      String? initialValue,
+      Decoration? backgroundDecoration,
+      double? height,
+        double? width,
+      CropAspectRatio? aspectRatio,
+      FormFieldSetter<String>? onSaved})
       : super(
             key: key,
             onSaved: onSaved,
@@ -21,10 +21,10 @@ class ImagePickerFormField extends FormField<String> {
             builder: _createBuilder( backgroundDecoration, height, width, aspectRatio));
 
   static FormFieldBuilder<String> _createBuilder(
-      Decoration backgroundDecoration,
-      double height,
-      double width,
-      CropAspectRatio aspectRatio) {
+      Decoration? backgroundDecoration,
+      double? height,
+      double? width,
+      CropAspectRatio? aspectRatio) {
     return (FormFieldState<String> field) {
       return GestureDetector(
         onTap: () async {
@@ -39,7 +39,9 @@ class ImagePickerFormField extends FormField<String> {
             aspectRatioPresets: [CropAspectRatioPreset.square],
             compressQuality: 70,
           );
-          field.didChange(croppedImage.path);
+          if(croppedImage != null) {
+            field.didChange(croppedImage.path);
+          }
         },
         child: Container(
             decoration: backgroundDecoration,
@@ -50,7 +52,7 @@ class ImagePickerFormField extends FormField<String> {
     };
   }
 
-  static Widget _buildWidget(String imageUrl) {
+  static Widget _buildWidget(String? imageUrl) {
     if (imageUrl != null) {
       return Image.file(File.fromUri(Uri.parse(imageUrl)));
     }

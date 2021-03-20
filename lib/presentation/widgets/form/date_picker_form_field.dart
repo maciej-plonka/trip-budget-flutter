@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 
 class DatePickerFormField extends FormField<DateTime> {
   DatePickerFormField(
-      {Key key,
-        FormFieldValidator<DateTime> validator,
-        DateTime initialValue,
-        FormFieldSetter<DateTime> onSaved,
-        String label})
+      {Key? key,
+        FormFieldValidator<DateTime>? validator,
+        DateTime? initialValue,
+        FormFieldSetter<DateTime>? onSaved,
+        String? label})
       : super(
     key: key,
     validator: validator,
@@ -17,7 +17,7 @@ class DatePickerFormField extends FormField<DateTime> {
     initialValue: initialValue,
   );
 
-  static FormFieldBuilder<DateTime> _createBuilder(String label, FormFieldValidator<DateTime> validator) {
+  static FormFieldBuilder<DateTime> _createBuilder(String? label, FormFieldValidator<DateTime>? validator) {
     final textFieldKey = GlobalKey<FormFieldState<String>>();
     return (FormFieldState<DateTime> field) {
       return Column(
@@ -37,7 +37,7 @@ class DatePickerFormField extends FormField<DateTime> {
               field.didChange(date);
               textFieldKey.currentState?.didChange(_formatDate(date));
             },
-            validator: (_) => validator.call(field.value),
+            validator: (_) => validator!.call(field.value),
             decoration: InputDecoration(
               labelText: label,
               icon: const Padding(
@@ -54,7 +54,7 @@ class DatePickerFormField extends FormField<DateTime> {
     };
   }
 
-  static String _formatDate(DateTime dateTime) {
+  static String _formatDate(DateTime? dateTime) {
     if (dateTime == null) {
       return "__/__/____";
     }
