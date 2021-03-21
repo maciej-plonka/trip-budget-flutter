@@ -16,18 +16,26 @@ class TripDatabaseRepository implements TripRepository {
 
   @override
   Future<void> create(TripModel tripModel) async {
-    return _tripDao.insertTrip(_mapModelToEntity(tripModel));
+    return _tripDao.create(_mapModelToEntity(tripModel));
   }
 
   @override
   Future<void> update(TripModel tripModel) async {
-    await _tripDao.insertTrip(_mapModelToEntity(tripModel));
+    if(tripModel.id == null ) {
+      throw ArgumentError.notNull("tripModel.id");
+    }
+    await _tripDao.update(_mapModelToEntity(tripModel));
   }
 
   @override
   Future<TripModel?> findById(int tripId) async {
     final trip = await _tripDao.findById(tripId);
     return trip != null ? _mapEntityToModel(trip) : null;
+  }
+
+  @override
+  Future<void> deleteById(int tripId) async {
+    await _tripDao.removeById(tripId);
   }
 }
 

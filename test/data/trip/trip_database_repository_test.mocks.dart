@@ -30,8 +30,18 @@ class MockTripDao extends _i1.Mock implements _i3.TripDao {
       (super.noSuchMethod(Invocation.method(#findById, [tripId]),
           returnValue: Future.value(_FakeTrip())) as _i4.Future<_i2.Trip?>);
   @override
-  _i4.Future<void> insertTrip(_i2.Trip? trip) =>
-      (super.noSuchMethod(Invocation.method(#insertTrip, [trip]),
+  _i4.Future<void> create(_i2.Trip? trip) =>
+      (super.noSuchMethod(Invocation.method(#create, [trip]),
+          returnValue: Future.value(null),
+          returnValueForMissingStub: Future.value()) as _i4.Future<void>);
+  @override
+  _i4.Future<void> update(_i2.Trip? trip) =>
+      (super.noSuchMethod(Invocation.method(#update, [trip]),
+          returnValue: Future.value(null),
+          returnValueForMissingStub: Future.value()) as _i4.Future<void>);
+  @override
+  _i4.Future<void> removeById(int? tripId) =>
+      (super.noSuchMethod(Invocation.method(#removeById, [tripId]),
           returnValue: Future.value(null),
           returnValueForMissingStub: Future.value()) as _i4.Future<void>);
 }

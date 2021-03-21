@@ -11,6 +11,13 @@ abstract class TripDao {
   @Query("SELECT * FROM Trip where id = :tripId")
   Future<Trip?> findById(int tripId);
 
-  @insert
-  Future<void> insertTrip(Trip trip);
+  @Insert(onConflict: OnConflictStrategy.fail)
+  Future<void> create(Trip trip);
+
+  @Update(onConflict: OnConflictStrategy.fail)
+  Future<void> update(Trip trip);
+
+  @Query("DELETE FROM Trip where id = :tripId")
+  Future<void> removeById(int tripId);
+
 }

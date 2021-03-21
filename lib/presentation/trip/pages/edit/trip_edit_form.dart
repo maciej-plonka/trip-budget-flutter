@@ -11,14 +11,14 @@ import 'package:trip_planner/presentation/widgets/form/image_picker_form_field.d
 
 class TripEditForm extends StatefulWidget {
   final Function onUpdated;
-  final TripModel tripModel;
+  final TripModel trip;
 
   const TripEditForm(
-      {Key? key, required this.onUpdated, required this.tripModel})
+      {Key? key, required this.onUpdated, required this.trip})
       : super(key: key);
 
   @override
-  _TripEditFormState createState() => _TripEditFormState(onUpdated, tripModel);
+  _TripEditFormState createState() => _TripEditFormState(onUpdated, trip);
 }
 
 class _TripEditFormState extends State<TripEditForm> {
@@ -94,7 +94,7 @@ class _TripEditFormState extends State<TripEditForm> {
                           ),
                           const Padding(
                             padding: const EdgeInsets.only(left: 4.0),
-                            child: const Text("Create",
+                            child: const Text("Update",
                                 style: TextStyle(color: Colors.white)),
                           ),
                         ],

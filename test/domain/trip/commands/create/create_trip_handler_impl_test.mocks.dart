@@ -42,4 +42,9 @@ class MockTripRepository extends _i1.Mock implements _i3.TripRepository {
       (super.noSuchMethod(Invocation.method(#update, [tripModel]),
           returnValue: Future.value(null),
           returnValueForMissingStub: Future.value()) as _i4.Future<void>);
+  @override
+  _i4.Future<void> deleteById(int? tripId) =>
+      (super.noSuchMethod(Invocation.method(#deleteById, [tripId]),
+          returnValue: Future.value(null),
+          returnValueForMissingStub: Future.value()) as _i4.Future<void>);
 }

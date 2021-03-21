@@ -8,4 +8,6 @@ abstract class TripRepository {
   Future<void> create(TripModel tripModel);
 
   Future<void> update(TripModel tripModel);
+
+  Future<void> deleteById(int tripId);
 }

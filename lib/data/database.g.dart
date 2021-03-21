@@ -106,6 +106,17 @@ class _$TripDao extends TripDao {
                   'startDateTime': item.startDateTime,
                   'endDateTime': item.endDateTime,
                   'imageUrl': item.imageUrl
+                }),
+        _tripUpdateAdapter = UpdateAdapter(
+            database,
+            'Trip',
+            ['id'],
+            (Trip item) => <String, Object?>{
+                  'id': item.id,
+                  'name': item.name,
+                  'startDateTime': item.startDateTime,
+                  'endDateTime': item.endDateTime,
+                  'imageUrl': item.imageUrl
                 });
 
   final sqflite.DatabaseExecutor database;
@@ -115,6 +126,8 @@ class _$TripDao extends TripDao {
   final QueryAdapter _queryAdapter;
 
   final InsertionAdapter<Trip> _tripInsertionAdapter;
+
+  final UpdateAdapter<Trip> _tripUpdateAdapter;
 
   @override
   Future<List<Trip>> findAll() async {
@@ -140,7 +153,18 @@ class _$TripDao extends TripDao {
   }
 
   @override
-  Future<void> insertTrip(Trip trip) async {
-    await _tripInsertionAdapter.insert(trip, OnConflictStrategy.abort);
+  Future<void> removeById(int tripId) async {
+    await _queryAdapter
+        .queryNoReturn('DELETE FROM Trip where id = ?', arguments: [tripId]);
+  }
+
+  @override
+  Future<void> create(Trip trip) async {
+    await _tripInsertionAdapter.insert(trip, OnConflictStrategy.fail);
+  }
+
+  @override
+  Future<void> update(Trip trip) async {
+    await _tripUpdateAdapter.update(trip, OnConflictStrategy.fail);
   }
 }

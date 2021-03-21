@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -36,8 +37,7 @@ void main() {
       //when
       await classUnderTest.create(trip);
       //then
-      expect(
-          verify(tripDao.insertTrip(captureAny)).captured.single.startDateTime,
+      expect(verify(tripDao.create(captureAny)).captured.single.startDateTime,
           startDate.microsecondsSinceEpoch);
     });
 
@@ -52,7 +52,53 @@ void main() {
       //when
       await classUnderTest.create(trip);
       //then
-      expect(verify(tripDao.insertTrip(captureAny)).captured.single.endDateTime,
+      expect(verify(tripDao.create(captureAny)).captured.single.endDateTime,
+          endDate.microsecondsSinceEpoch);
+    });
+  });
+
+  group("TripDatabaseRepository update()", () {
+    test("trying to update TripModel with null id should throw exception",
+        () async {
+      //given
+      final classUnderTest = TripDatabaseRepository(tripDao);
+      final startDate = DateTime(2020);
+      final endDate = DateTime(startDate.year + 1);
+      final trip =
+          TripModel(name: "Trip", startDate: startDate, endDate: endDate);
+      //when
+      final action = () async => await classUnderTest.update(trip);
+      //then
+      expect(action, throwsA(isA<Error>()));
+    });
+
+    test("updating trip should correctly map startDate to microseconds",
+            () async {
+          //given
+          final classUnderTest = TripDatabaseRepository(tripDao);
+          final startDate = DateTime(2020);
+          final endDate = DateTime(startDate.year + 1);
+          final trip =
+          TripModel(id: 1,name: "Trip", startDate: startDate, endDate: endDate);
+          //when
+          await classUnderTest.update(trip);
+          //then
+          expect(verify(tripDao.update(captureAny)).captured.single.startDateTime,
+              startDate.microsecondsSinceEpoch);
+        });
+
+    test("updating trip should correctly map startDate to microseconds",
+        () async {
+      //given
+      final classUnderTest = TripDatabaseRepository(tripDao);
+      final startDate = DateTime(2020);
+      final endDate = DateTime(startDate.year + 1);
+      final trip =
+          TripModel(id: 1, name: "Trip", startDate: startDate, endDate: endDate);
+      //when
+      await classUnderTest.update(trip);
+      //then
+      expect(verify(tripDao.update(captureAny)).captured.single.endDateTime,
           endDate.microsecondsSinceEpoch);
     });
   });
