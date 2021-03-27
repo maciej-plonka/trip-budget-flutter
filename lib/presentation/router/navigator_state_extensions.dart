@@ -8,4 +8,7 @@ extension NavigatorStateExtensions on NavigatorState {
       pushNamed(Routes.tripDetails, arguments: tripId);
 
   Future<void> pushTripEdit(int tripId) => pushNamed(Routes.tripEdit,arguments:  tripId);
+
+  Future<void> pushBudgetHome(int tripId) => pushNamed(Routes.budgetHome, arguments: tripId);
+  Future<void> pushShoppingListHome(int tripId) => pushNamed(Routes.shoppingListHome, arguments: tripId);
 }

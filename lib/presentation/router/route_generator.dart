@@ -9,6 +9,8 @@ class Routes {
   static const tripNew = "/trip/new";
   static const tripDetails = "/trip/details";
   static const tripEdit = "/trip/edit";
+  static const budgetHome = "/budget";
+  static const shoppingListHome ="/shoppingList";
 }
 
 class RouteGenerator {

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:trip_planner/data/trip/trip.dart';
 import 'package:trip_planner/data/trip/trip_dao.dart';
 import 'package:trip_planner/data/trip/trip_database_repository.dart';
 import 'package:trip_planner/domain/trip/repository/trip_model.dart';
@@ -22,6 +23,29 @@ void main() {
       final result = await classUnderTest.findAll();
       //then
       expect(result, []);
+    });
+
+    test("should return not empty list when trips are in dao", () async {
+      //given
+      final trips = [Trip(name: "Trip", startDateTime: 20, endDateTime: 21)];
+      when(tripDao.findAll()).thenAnswer((_) async => trips);
+      final classUnderTest = TripDatabaseRepository(tripDao);
+      //when
+      final result = await classUnderTest.findAll();
+      //then
+      expect(result.length, 1);
+    });
+
+    test("returned trip should have the same name", () async {
+      //given
+      final tripName = "Trip Name";
+      final trips = [Trip(name: tripName, startDateTime: 20, endDateTime: 21)];
+      when(tripDao.findAll()).thenAnswer((_) async => trips);
+      final classUnderTest = TripDatabaseRepository(tripDao);
+      //when
+      final result = (await classUnderTest.findAll()).first;
+      //then
+      expect(result.name, tripName);
     });
   });
 

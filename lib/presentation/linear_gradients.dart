@@ -8,4 +8,12 @@ class LinearGradients {
     const Color(0xFF4AC9AA),
   ]);
 
+  static const orange = const LinearGradient(colors: const [
+    const Color(0xFFEF7297),
+    const Color(0xFFFCC87B),
+  ]);
+  static const purple = const LinearGradient(colors: const [
+    const Color(0xFF7F7DF2),
+    const Color(0xFFC772EF),
+  ]);
 }

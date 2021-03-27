@@ -44,7 +44,7 @@ class TripDetailsPage extends StatelessWidget {
       children: [
         TripDetailsCard(trip: trip),
         const SizedBox(height: 16),
-        TripDetailsModules()
+        TripDetailsModules(tripId: trip.id!)
       ],
     ));
   }
