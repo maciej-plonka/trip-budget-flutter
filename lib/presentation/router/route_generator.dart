@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trip_planner/dependencies/dependencies.dart';
 import 'package:trip_planner/presentation/budget/pages/home/budget_home_page.dart';
+import 'package:trip_planner/presentation/budget/pages/new/budget_new_page.dart';
 import 'package:trip_planner/presentation/trip/pages/details/trip_details_page.dart';
 import 'package:trip_planner/presentation/trip/pages/edit/trip_edit_page.dart';
 import 'package:trip_planner/presentation/trip/pages/list/trip_list_page.dart';
@@ -38,7 +39,14 @@ class RouteGenerator {
           return MaterialPageRoute(
               builder: (_) =>
                   BudgetHomePage(tripId: args, cubit: dependencies()));
-        return _error("TripEditPage requires tripId");
+        return _error("BudgetHomePage requires tripId");
+      case Routes.budgetNew:
+        if (args is int) {
+          return MaterialPageRoute(
+              builder: (_) =>
+                  BudgetNewPage(tripId: args, commandHandler: dependencies()));
+        }
+        return _error("BudgetNewPage requires tripId");
     }
     return _error("Unknown route: ${settings.name}");
   }

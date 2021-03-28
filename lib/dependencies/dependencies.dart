@@ -4,6 +4,10 @@ import 'package:trip_planner/data/budget/budget_database_repository.dart';
 import 'package:trip_planner/data/database.dart';
 import 'package:trip_planner/data/trip/trip_dao.dart';
 import 'package:trip_planner/data/trip/trip_database_repository.dart';
+import 'package:trip_planner/domain/budget/commands/create/budget_create_command_handler.dart';
+import 'package:trip_planner/domain/budget/commands/create/budget_create_command_handler_impl.dart';
+import 'package:trip_planner/domain/budget/commands/update/budget_update_command_handler.dart';
+import 'package:trip_planner/domain/budget/commands/update/budget_update_command_handler_impl.dart';
 import 'package:trip_planner/domain/budget/query/budget_query_service.dart';
 import 'package:trip_planner/domain/budget/query/budget_query_service_impl.dart';
 import 'package:trip_planner/domain/budget/repository/budget_repository.dart';
@@ -37,6 +41,8 @@ Future<void> setupDependencies(AppDatabase database) {
   dependencies.registerLazySingleton<BudgetDao>(() => database.budgetDao);
   dependencies.registerLazySingleton<BudgetRepository>(() => BudgetDatabaseRepository(dependencies()));
   dependencies.registerLazySingleton<BudgetQueryService>(() => BudgetQueryServiceImpl(dependencies()));
+  dependencies.registerLazySingleton<BudgetCreateCommandHandler>(() => BudgetCreateCommandHandlerImpl(dependencies()));
+  dependencies.registerLazySingleton<BudgetUpdateCommandHandler>(() => BudgetUpdateCommandHandlerImpl(dependencies()));
   dependencies.registerFactory<BudgetByTripIdCubit>(() => BudgetByTripIdCubitImpl(dependencies()));
 
 

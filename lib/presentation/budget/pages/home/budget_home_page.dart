@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trip_planner/domain/budget/repository/budget_model.dart';
 import 'package:trip_planner/presentation/budget/bloc/budget_by_trip_id/budget_by_trip_id_cubit.dart';
 import 'package:trip_planner/presentation/budget/bloc/budget_by_trip_id/budget_by_trip_id_state.dart';
+import 'package:trip_planner/presentation/budget/pages/budget_page_scaffold.dart';
 import 'package:trip_planner/presentation/linear_gradients.dart';
 import 'package:trip_planner/presentation/widgets/button/gradient_button.dart';
 import 'package:trip_planner/presentation/router/navigator_state_extensions.dart';
@@ -15,13 +16,8 @@ class BudgetHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Budget home", style: TextStyle(color: Colors.white)),
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(gradient: LinearGradients.orange),
-        ),
-      ),
+    return BudgetPageScaffold(
+      titleText: "Budget home",
       body: Container(
         padding: const EdgeInsets.all(16.0),
         child: BlocBuilder<BudgetByTripIdCubit, BudgetByTripIdState>(
@@ -53,8 +49,9 @@ class BudgetHomePage extends StatelessWidget {
           GradientButton(
             gradient: LinearGradients.primary,
               child: const Center(child: Text("Create budget", style: const TextStyle(color: Colors.white),)),
-              onPressed: () {
-              Navigator.of(context).pushBudgetNew(tripId);
+              onPressed: () async {
+                await Navigator.of(context).pushBudgetNew(tripId);
+                await cubit.getByTripId(tripId);
               },
           )
         ],
@@ -70,7 +67,7 @@ class BudgetHomePage extends StatelessWidget {
 
   Widget _buildBudgetHome(BudgetModel budget) {
     return Center(
-      child: Text("Budget home"),
+      child: Text("Budget home: ${budget.amount}"),
     );
   }
 
