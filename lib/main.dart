@@ -8,7 +8,7 @@ import 'package:trip_planner/presentation/router/route_generator.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final database = await prepareDatabase("app_database.db");
-  setupDependencies(database);
+  await setupDependencies(database);
   runApp(MyApp());
 }
 

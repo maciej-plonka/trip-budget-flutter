@@ -62,6 +62,8 @@ class _$AppDatabase extends AppDatabase {
 
   TripDao? _tripDaoInstance;
 
+  BudgetDao? _budgetDaoInstance;
+
   Future<sqflite.Database> open(String path, List<Migration> migrations,
       [Callback? callback]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
@@ -81,6 +83,8 @@ class _$AppDatabase extends AppDatabase {
       onCreate: (database, version) async {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Trip` (`id` INTEGER, `name` TEXT NOT NULL, `startDateTime` INTEGER NOT NULL, `endDateTime` INTEGER NOT NULL, `imageUrl` TEXT, PRIMARY KEY (`id`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `Budget` (`id` INTEGER, `tripId` INTEGER NOT NULL, `amount` TEXT NOT NULL, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -91,6 +95,11 @@ class _$AppDatabase extends AppDatabase {
   @override
   TripDao get tripDao {
     return _tripDaoInstance ??= _$TripDao(database, changeListener);
+  }
+
+  @override
+  BudgetDao get budgetDao {
+    return _budgetDaoInstance ??= _$BudgetDao(database, changeListener);
   }
 }
 
@@ -166,5 +175,67 @@ class _$TripDao extends TripDao {
   @override
   Future<void> update(Trip trip) async {
     await _tripUpdateAdapter.update(trip, OnConflictStrategy.fail);
+  }
+}
+
+class _$BudgetDao extends BudgetDao {
+  _$BudgetDao(this.database, this.changeListener)
+      : _queryAdapter = QueryAdapter(database),
+        _budgetInsertionAdapter = InsertionAdapter(
+            database,
+            'Budget',
+            (Budget item) => <String, Object?>{
+                  'id': item.id,
+                  'tripId': item.tripId,
+                  'amount': item.amount
+                }),
+        _budgetUpdateAdapter = UpdateAdapter(
+            database,
+            'Budget',
+            ['id'],
+            (Budget item) => <String, Object?>{
+                  'id': item.id,
+                  'tripId': item.tripId,
+                  'amount': item.amount
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<Budget> _budgetInsertionAdapter;
+
+  final UpdateAdapter<Budget> _budgetUpdateAdapter;
+
+  @override
+  Future<Budget?> findById(int budgetId) async {
+    return _queryAdapter.query('SELECT * FROM Budget where id = ?',
+        arguments: [budgetId],
+        mapper: (Map<String, Object?> row) => Budget(
+            id: row['id'] as int?,
+            tripId: row['tripId'] as int,
+            amount: row['amount'] as String));
+  }
+
+  @override
+  Future<Budget?> findByTripId(int tripId) async {
+    return _queryAdapter.query('SELECT * FROM Budget where tripId = ?',
+        arguments: [tripId],
+        mapper: (Map<String, Object?> row) => Budget(
+            id: row['id'] as int?,
+            tripId: row['tripId'] as int,
+            amount: row['amount'] as String));
+  }
+
+  @override
+  Future<void> create(Budget budget) async {
+    await _budgetInsertionAdapter.insert(budget, OnConflictStrategy.fail);
+  }
+
+  @override
+  Future<void> update(Budget budget) async {
+    await _budgetUpdateAdapter.update(budget, OnConflictStrategy.fail);
   }
 }
