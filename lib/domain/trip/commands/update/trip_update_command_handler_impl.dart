@@ -1,15 +1,15 @@
-import 'package:trip_planner/domain/trip/commands/update/update_trip.dart';
-import 'package:trip_planner/domain/trip/commands/update/update_trip_handler.dart';
+import 'package:trip_planner/domain/trip/commands/update/trip_update_command.dart';
+import 'package:trip_planner/domain/trip/commands/update/trip_update_command_handler.dart';
 import 'package:trip_planner/domain/trip/repository/trip_model.dart';
 import 'package:trip_planner/domain/trip/repository/trip_repository.dart';
 
-class UpdateTripHandlerImpl extends UpdateTripHandler {
+class TripUpdateCommandHandlerImpl extends TripUpdateCommandHandler {
   final TripRepository _tripRepository;
 
-  UpdateTripHandlerImpl(this._tripRepository);
+  TripUpdateCommandHandlerImpl(this._tripRepository);
 
   @override
-  Future<void> updateTrip(UpdateTrip updateTrip) async {
+  Future<void> updateTrip(TripUpdateCommand updateTrip) async {
     final model = TripModel(
       id: updateTrip.id,
       name: updateTrip.name,

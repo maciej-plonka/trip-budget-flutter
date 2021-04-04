@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:trip_planner/domain/trip/commands/create/create_trip.dart';
-import 'package:trip_planner/domain/trip/commands/create/create_trip_handler_impl.dart';
+import 'package:trip_planner/domain/trip/commands/create/trip_create_command.dart';
+import 'package:trip_planner/domain/trip/commands/create/trip_create_command_handler_impl.dart';
 import 'package:trip_planner/domain/trip/repository/trip_repository.dart';
 
 import 'create_trip_handler_impl_test.mocks.dart';
@@ -18,8 +18,8 @@ void main() {
       //given
       when(tripRepository.create(any)).thenAnswer((_) => Future.value());
       final tripName = "Trip Name";
-      final createTrip = CreateTrip(name: tripName, startDate: DateTime(2020), endDate: DateTime(2021));
-      final classUnderTest = CreateTripHandlerImpl(tripRepository);
+      final createTrip = TripCreateCommand(name: tripName, startDate: DateTime(2020), endDate: DateTime(2021));
+      final classUnderTest = TripCreateCommandHandlerImpl(tripRepository);
       //when
       await classUnderTest.createTrip(createTrip);
       //then
@@ -30,8 +30,8 @@ void main() {
       //given
       when(tripRepository.create(any)).thenAnswer((_) => Future.value());
       final startDate = DateTime(2020);
-      final createTrip = CreateTrip(name: "Trip Name", startDate: startDate, endDate: DateTime(2021));
-      final classUnderTest = CreateTripHandlerImpl(tripRepository);
+      final createTrip = TripCreateCommand(name: "Trip Name", startDate: startDate, endDate: DateTime(2021));
+      final classUnderTest = TripCreateCommandHandlerImpl(tripRepository);
       //when
       await classUnderTest.createTrip(createTrip);
       //then
@@ -42,8 +42,8 @@ void main() {
       //given
       when(tripRepository.create(any)).thenAnswer((_) => Future.value());
       final endDate = DateTime(2021);
-      final createTrip = CreateTrip(name: "Trip Name", startDate: DateTime(2020), endDate:endDate);
-      final classUnderTest = CreateTripHandlerImpl(tripRepository);
+      final createTrip = TripCreateCommand(name: "Trip Name", startDate: DateTime(2020), endDate:endDate);
+      final classUnderTest = TripCreateCommandHandlerImpl(tripRepository);
       //when
       await classUnderTest.createTrip(createTrip);
       //then
@@ -54,8 +54,8 @@ void main() {
       //given
       when(tripRepository.create(any)).thenAnswer((_) => Future.value());
       String? nullImageUrl;
-      final createTrip = CreateTrip(name: "Trip Name", startDate: DateTime(2020), endDate:DateTime(2021), imageUrl: nullImageUrl);
-      final classUnderTest = CreateTripHandlerImpl(tripRepository);
+      final createTrip = TripCreateCommand(name: "Trip Name", startDate: DateTime(2020), endDate:DateTime(2021), imageUrl: nullImageUrl);
+      final classUnderTest = TripCreateCommandHandlerImpl(tripRepository);
       //when
       await classUnderTest.createTrip(createTrip);
       //then
@@ -66,8 +66,8 @@ void main() {
       //given
       when(tripRepository.create(any)).thenAnswer((_) => Future.value());
       String validImageUrl = "image url";
-      final createTrip = CreateTrip(name: "Trip Name", startDate: DateTime(2020), endDate:DateTime(2021), imageUrl: validImageUrl);
-      final classUnderTest = CreateTripHandlerImpl(tripRepository);
+      final createTrip = TripCreateCommand(name: "Trip Name", startDate: DateTime(2020), endDate:DateTime(2021), imageUrl: validImageUrl);
+      final classUnderTest = TripCreateCommandHandlerImpl(tripRepository);
       //when
       await classUnderTest.createTrip(createTrip);
       //then

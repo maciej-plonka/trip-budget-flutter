@@ -1,12 +1,12 @@
 import 'package:equatable/equatable.dart';
 
-class CreateTrip extends Equatable {
+class TripCreateCommand extends Equatable {
   final String name;
   final DateTime startDate;
   final DateTime endDate;
   final String? imageUrl;
 
-  CreateTrip(
+  TripCreateCommand(
       {required this.name,
       required this.startDate,
       required this.endDate,

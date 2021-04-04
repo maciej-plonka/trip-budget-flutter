@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trip_planner/dependencies/dependencies.dart';
-import 'package:trip_planner/domain/trip/commands/update/update_trip.dart';
-import 'package:trip_planner/domain/trip/commands/update/update_trip_handler.dart';
+import 'package:trip_planner/domain/trip/commands/update/trip_update_command.dart';
+import 'package:trip_planner/domain/trip/commands/update/trip_update_command_handler.dart';
 import 'package:trip_planner/domain/trip/repository/trip_model.dart';
 import 'package:trip_planner/presentation/linear_gradients.dart';
 import 'package:trip_planner/presentation/widgets/base_card.dart';
@@ -24,7 +24,7 @@ class TripEditForm extends StatefulWidget {
 class _TripEditFormState extends State<TripEditForm> {
   final Function _onUpdated;
   final TripModel _currentTrip;
-  final UpdateTripHandler _updateTripHandler = dependencies();
+  final TripUpdateCommandHandler _updateTripHandler = dependencies();
 
   final _formKey = GlobalKey<FormState>();
   final _startDateKey = GlobalKey<FormFieldState<DateTime>>();
@@ -116,7 +116,7 @@ class _TripEditFormState extends State<TripEditForm> {
     final valid = formState.validate();
     if (!valid) return;
     formState.save();
-    final updateTrip = UpdateTrip(
+    final updateTrip = TripUpdateCommand(
         id: _currentTrip.id!,
         name: _name!,
         startDate: _startDate!,

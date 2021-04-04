@@ -1,13 +1,13 @@
 import 'package:equatable/equatable.dart';
 
-class UpdateTrip extends Equatable {
+class TripUpdateCommand extends Equatable {
   final int id;
   final String name;
   final DateTime startDate;
   final DateTime endDate;
   final String? imageUrl;
 
-  UpdateTrip(
+  TripUpdateCommand(
       {required this.id,
       required this.name,
       required this.startDate,

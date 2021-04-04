@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 
-class DeleteTrip extends Equatable {
+class TripDeleteCommand extends Equatable {
   final int tripId;
 
-  const DeleteTrip(this.tripId);
+  const TripDeleteCommand(this.tripId);
 
   @override
   List<Object?> get props => [tripId];

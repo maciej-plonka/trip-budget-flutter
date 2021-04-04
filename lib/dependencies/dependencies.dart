@@ -11,10 +11,10 @@ import 'package:trip_planner/domain/budget/commands/update/budget_update_command
 import 'package:trip_planner/domain/budget/query/budget_query_service.dart';
 import 'package:trip_planner/domain/budget/query/budget_query_service_impl.dart';
 import 'package:trip_planner/domain/budget/repository/budget_repository.dart';
-import 'package:trip_planner/domain/trip/commands/create/create_trip_handler.dart';
-import 'package:trip_planner/domain/trip/commands/create/create_trip_handler_impl.dart';
-import 'package:trip_planner/domain/trip/commands/update/update_trip_handler.dart';
-import 'package:trip_planner/domain/trip/commands/update/update_trip_handler_impl.dart';
+import 'package:trip_planner/domain/trip/commands/create/trip_create_command_handler.dart';
+import 'package:trip_planner/domain/trip/commands/create/trip_create_command_handler_impl.dart';
+import 'package:trip_planner/domain/trip/commands/update/trip_update_command_handler.dart';
+import 'package:trip_planner/domain/trip/commands/update/trip_update_command_handler_impl.dart';
 import 'package:trip_planner/domain/trip/query/trip_query_service.dart';
 import 'package:trip_planner/domain/trip/query/trip_query_service_impl.dart';
 import 'package:trip_planner/domain/trip/repository/trip_repository.dart';
@@ -32,8 +32,8 @@ Future<void> setupDependencies(AppDatabase database) {
   dependencies.registerLazySingleton<TripDao>(() => database.tripDao);
   dependencies.registerLazySingleton<TripRepository>(() => TripDatabaseRepository(dependencies()));
   dependencies.registerLazySingleton<TripQueryService>(() => TripQueryServiceImpl(dependencies()));
-  dependencies.registerLazySingleton<CreateTripHandler>(() => CreateTripHandlerImpl(dependencies()));
-  dependencies.registerLazySingleton<UpdateTripHandler>(() => UpdateTripHandlerImpl(dependencies()));
+  dependencies.registerLazySingleton<TripCreateCommandHandler>(() => TripCreateCommandHandlerImpl(dependencies()));
+  dependencies.registerLazySingleton<TripUpdateCommandHandler>(() => TripUpdateCommandHandlerImpl(dependencies()));
   dependencies.registerFactory<TripByIdCubit>(() => TripByIdCubitImpl(dependencies()));
   dependencies.registerFactory<TripListCubit>(() => TripListCubitImpl(dependencies()));
 

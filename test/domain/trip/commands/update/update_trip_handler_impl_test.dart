@@ -2,8 +2,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:trip_planner/domain/trip/commands/update/update_trip.dart';
-import 'package:trip_planner/domain/trip/commands/update/update_trip_handler_impl.dart';
+import 'package:trip_planner/domain/trip/commands/update/trip_update_command.dart';
+import 'package:trip_planner/domain/trip/commands/update/trip_update_command_handler_impl.dart';
 import 'package:trip_planner/domain/trip/repository/trip_repository.dart';
 
 import 'update_trip_handler_impl_test.mocks.dart';
@@ -16,7 +16,7 @@ void main() {
       //given
       final expectedId = 1;
       final tripRepository = MockTripRepository();
-      final classUnderTest = UpdateTripHandlerImpl(tripRepository);
+      final classUnderTest = TripUpdateCommandHandlerImpl(tripRepository);
 
       //when
       await classUnderTest.updateTrip(_updateTrip(id: expectedId));
@@ -30,7 +30,7 @@ void main() {
       //given
       final expected = "Name";
       final tripRepository = MockTripRepository();
-      final classUnderTest = UpdateTripHandlerImpl(tripRepository);
+      final classUnderTest = TripUpdateCommandHandlerImpl(tripRepository);
 
       //when
       await classUnderTest.updateTrip(_updateTrip(name: expected));
@@ -45,7 +45,7 @@ void main() {
       final expectedStartDate = DateTime(2020);
       final expectedEndDate = DateTime(2021);
       final tripRepository = MockTripRepository();
-      final classUnderTest = UpdateTripHandlerImpl(tripRepository);
+      final classUnderTest = TripUpdateCommandHandlerImpl(tripRepository);
 
       //when
       await classUnderTest.updateTrip(_updateTrip(startDate: expectedStartDate, endDate: expectedEndDate));
@@ -59,7 +59,7 @@ void main() {
     });
   });
 }
-UpdateTrip _updateTrip({
+TripUpdateCommand _updateTrip({
   int id = 1,
   String name = "validName",
   DateTime? startDate,
@@ -67,5 +67,5 @@ UpdateTrip _updateTrip({
 }) {
   final finalStartDate = startDate ?? DateTime(2020);
   final finalEndDate = endDate ?? DateTime(finalStartDate.year + 1);
-  return UpdateTrip(id: id, name: name, startDate: finalStartDate, endDate: finalEndDate);
+  return TripUpdateCommand(id: id, name: name, startDate: finalStartDate, endDate: finalEndDate);
 }

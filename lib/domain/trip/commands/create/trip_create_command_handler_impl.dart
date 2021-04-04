@@ -1,15 +1,15 @@
-import 'package:trip_planner/domain/trip/commands/create/create_trip.dart';
-import 'package:trip_planner/domain/trip/commands/create/create_trip_handler.dart';
+import 'package:trip_planner/domain/trip/commands/create/trip_create_command.dart';
+import 'package:trip_planner/domain/trip/commands/create/trip_create_command_handler.dart';
 import 'package:trip_planner/domain/trip/repository/trip_model.dart';
 import 'package:trip_planner/domain/trip/repository/trip_repository.dart';
 
-class CreateTripHandlerImpl implements CreateTripHandler {
+class TripCreateCommandHandlerImpl implements TripCreateCommandHandler {
   final TripRepository _tripRepository;
 
-  CreateTripHandlerImpl(this._tripRepository);
+  TripCreateCommandHandlerImpl(this._tripRepository);
 
   @override
-  Future<void> createTrip(CreateTrip createTrip) async {
+  Future<void> createTrip(TripCreateCommand createTrip) async {
     final tripModel = TripModel(
       name: createTrip.name,
       startDate: createTrip.startDate,

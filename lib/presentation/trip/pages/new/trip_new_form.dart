@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trip_planner/dependencies/dependencies.dart';
-import 'package:trip_planner/domain/trip/commands/create/create_trip.dart';
-import 'package:trip_planner/domain/trip/commands/create/create_trip_handler.dart';
+import 'package:trip_planner/domain/trip/commands/create/trip_create_command.dart';
+import 'package:trip_planner/domain/trip/commands/create/trip_create_command_handler.dart';
 import 'package:trip_planner/presentation/linear_gradients.dart';
 import 'package:trip_planner/presentation/widgets/base_card.dart';
 import 'package:trip_planner/presentation/widgets/button/gradient_button.dart';
@@ -22,7 +22,7 @@ class _TripNewFormState extends State<TripNewForm> {
   final Function _onCreated;
   final _formKey = GlobalKey<FormState>();
   final _startDateKey = GlobalKey<FormFieldState<DateTime>>();
-  final CreateTripHandler? _createTripHandler = dependencies<CreateTripHandler>();
+  final TripCreateCommandHandler? _createTripHandler = dependencies<TripCreateCommandHandler>();
   String? _name;
   String? _imageUrl;
   DateTime? _startDate;
@@ -105,7 +105,7 @@ class _TripNewFormState extends State<TripNewForm> {
     if (!valid) return;
     _formKey.currentState!.save();
     final createTrip =
-        CreateTrip(name: _name!, startDate: _startDate!, endDate: _endDate!, imageUrl: _imageUrl);
+        TripCreateCommand(name: _name!, startDate: _startDate!, endDate: _endDate!, imageUrl: _imageUrl);
     await _createTripHandler!.createTrip(createTrip);
     _onCreated.call();
   }
