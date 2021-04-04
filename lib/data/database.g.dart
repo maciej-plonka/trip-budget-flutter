@@ -64,6 +64,8 @@ class _$AppDatabase extends AppDatabase {
 
   BudgetDao? _budgetDaoInstance;
 
+  ShoppingListItemDao? _shoppingListItemDaoInstance;
+
   Future<sqflite.Database> open(String path, List<Migration> migrations,
       [Callback? callback]) async {
     final databaseOptions = sqflite.OpenDatabaseOptions(
@@ -85,6 +87,8 @@ class _$AppDatabase extends AppDatabase {
             'CREATE TABLE IF NOT EXISTS `Trip` (`id` INTEGER, `name` TEXT NOT NULL, `startDateTime` INTEGER NOT NULL, `endDateTime` INTEGER NOT NULL, `imageUrl` TEXT, PRIMARY KEY (`id`))');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Budget` (`id` INTEGER, `tripId` INTEGER NOT NULL, `amount` TEXT NOT NULL, PRIMARY KEY (`id`))');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `ShoppingListItem` (`id` INTEGER, `tripId` INTEGER NOT NULL, `amount` TEXT NOT NULL, `name` TEXT NOT NULL, `comment` TEXT NOT NULL, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -100,6 +104,12 @@ class _$AppDatabase extends AppDatabase {
   @override
   BudgetDao get budgetDao {
     return _budgetDaoInstance ??= _$BudgetDao(database, changeListener);
+  }
+
+  @override
+  ShoppingListItemDao get shoppingListItemDao {
+    return _shoppingListItemDaoInstance ??=
+        _$ShoppingListItemDao(database, changeListener);
   }
 }
 
@@ -237,5 +247,78 @@ class _$BudgetDao extends BudgetDao {
   @override
   Future<void> update(Budget budget) async {
     await _budgetUpdateAdapter.update(budget, OnConflictStrategy.fail);
+  }
+}
+
+class _$ShoppingListItemDao extends ShoppingListItemDao {
+  _$ShoppingListItemDao(this.database, this.changeListener)
+      : _queryAdapter = QueryAdapter(database),
+        _shoppingListItemInsertionAdapter = InsertionAdapter(
+            database,
+            'ShoppingListItem',
+            (ShoppingListItem item) => <String, Object?>{
+                  'id': item.id,
+                  'tripId': item.tripId,
+                  'amount': item.amount,
+                  'name': item.name,
+                  'comment': item.comment
+                }),
+        _shoppingListItemUpdateAdapter = UpdateAdapter(
+            database,
+            'ShoppingListItem',
+            ['id'],
+            (ShoppingListItem item) => <String, Object?>{
+                  'id': item.id,
+                  'tripId': item.tripId,
+                  'amount': item.amount,
+                  'name': item.name,
+                  'comment': item.comment
+                });
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<ShoppingListItem> _shoppingListItemInsertionAdapter;
+
+  final UpdateAdapter<ShoppingListItem> _shoppingListItemUpdateAdapter;
+
+  @override
+  Future<ShoppingListItem?> findById(int id) async {
+    return _queryAdapter.query('SELECT * FROM ShoppingListItem WHERE id = ?',
+        arguments: [id],
+        mapper: (Map<String, Object?> row) => ShoppingListItem(
+            id: row['id'] as int?,
+            tripId: row['tripId'] as int,
+            amount: row['amount'] as String,
+            name: row['name'] as String,
+            comment: row['comment'] as String));
+  }
+
+  @override
+  Future<List<ShoppingListItem>> findAllByTripId(int tripId) async {
+    return _queryAdapter.queryList(
+        'SELECT * FROM ShoppingListItem WHERE tripId = ?',
+        arguments: [tripId],
+        mapper: (Map<String, Object?> row) => ShoppingListItem(
+            id: row['id'] as int?,
+            tripId: row['tripId'] as int,
+            amount: row['amount'] as String,
+            name: row['name'] as String,
+            comment: row['comment'] as String));
+  }
+
+  @override
+  Future<void> create(ShoppingListItem budget) async {
+    await _shoppingListItemInsertionAdapter.insert(
+        budget, OnConflictStrategy.fail);
+  }
+
+  @override
+  Future<void> update(ShoppingListItem budget) async {
+    await _shoppingListItemUpdateAdapter.update(
+        budget, OnConflictStrategy.fail);
   }
 }
