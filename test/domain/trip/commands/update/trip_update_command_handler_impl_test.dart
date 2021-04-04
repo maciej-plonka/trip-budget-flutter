@@ -6,7 +6,7 @@ import 'package:trip_planner/domain/trip/commands/update/trip_update_command.dar
 import 'package:trip_planner/domain/trip/commands/update/trip_update_command_handler_impl.dart';
 import 'package:trip_planner/domain/trip/repository/trip_repository.dart';
 
-import 'update_trip_handler_impl_test.mocks.dart';
+import 'trip_update_command_handler_impl_test.mocks.dart';
 
 
 @GenerateMocks([TripRepository])

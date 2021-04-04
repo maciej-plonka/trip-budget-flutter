@@ -6,7 +6,7 @@ import 'package:trip_planner/domain/trip/commands/delete/trip_delete_command.dar
 import 'package:trip_planner/domain/trip/commands/delete/trip_delete_command_handler_impl.dart';
 import 'package:trip_planner/domain/trip/repository/trip_repository.dart';
 
-import 'delete_trip_handler_impl_test.mocks.dart';
+import 'trip_delete_command_handler_impl_test.mocks.dart';
 
 
 
