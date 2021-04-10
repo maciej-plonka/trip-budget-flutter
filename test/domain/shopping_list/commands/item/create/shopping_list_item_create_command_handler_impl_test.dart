@@ -62,6 +62,20 @@ void main() {
       expect(result, isA<Success>());
     });
 
+    test("should return Success with 2 messages when both name and amount are invalid", () async {
+      final repository = MockShoppingListRepository();
+      final classUnderTest = _classUnderTest(repository);
+      final invalidCommand = _sampleCommand(
+        name: "",
+        amount: Decimal.zero
+      );
+
+      final result = await classUnderTest.handle(invalidCommand);
+
+      expect(result, isA<Errors>());
+      expect((result as Errors).messages.length, 2);
+    });
+
   });
 }
 
