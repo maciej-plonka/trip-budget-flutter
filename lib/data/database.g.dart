@@ -311,14 +311,14 @@ class _$ShoppingListItemDao extends ShoppingListItemDao {
   }
 
   @override
-  Future<void> create(ShoppingListItem budget) async {
+  Future<void> create(ShoppingListItem shoppingListItem) async {
     await _shoppingListItemInsertionAdapter.insert(
-        budget, OnConflictStrategy.fail);
+        shoppingListItem, OnConflictStrategy.fail);
   }
 
   @override
-  Future<void> update(ShoppingListItem budget) async {
+  Future<void> update(ShoppingListItem shoppingListItem) async {
     await _shoppingListItemUpdateAdapter.update(
-        budget, OnConflictStrategy.fail);
+        shoppingListItem, OnConflictStrategy.fail);
   }
 }
