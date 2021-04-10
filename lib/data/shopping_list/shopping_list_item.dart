@@ -9,7 +9,8 @@ class ShoppingListItem {
   final String name;
   final String comment;
 
-  ShoppingListItem({required this.id,
+  ShoppingListItem({
+    this.id,
     required this.tripId,
     required this.amount,
     required this.name,

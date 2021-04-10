@@ -1,56 +1,58 @@
-
 import 'package:decimal/decimal.dart';
 import 'package:trip_planner/data/budget/budget.dart';
 import 'package:trip_planner/data/budget/budget_dao.dart';
+import 'package:trip_planner/data/shopping_list/shopping_list_item.dart';
+import 'package:trip_planner/data/shopping_list/shopping_list_item_dao.dart';
 import 'package:trip_planner/domain/budget/repository/budget_model.dart';
 import 'package:trip_planner/domain/budget/repository/budget_repository.dart';
+import 'package:trip_planner/domain/shopping_list/repository/shopping_list_item_model.dart';
+import 'package:trip_planner/domain/shopping_list/repository/shopping_list_repository.dart';
 
-class BudgetDatabaseRepository implements BudgetRepository {
-  final BudgetDao _budgetDao;
+class ShoppingListDatabaseRepository implements ShoppingListRepository {
+  final ShoppingListItemDao _itemDao;
 
-  BudgetDatabaseRepository(this._budgetDao);
+  ShoppingListDatabaseRepository(this._itemDao);
 
   @override
-  Future<BudgetModel?> findById(int id) async {
-    final budget = await _budgetDao.findById(id);
-    if (budget == null) {
+  Future<void> create(ShoppingListItemModel shoppingItemModel) {
+    return _itemDao.create(_mapToEntity(shoppingItemModel));
+  }
+
+  @override
+  Future<void> update(ShoppingListItemModel budgetModel) {
+    return _itemDao.update(_mapToEntity(budgetModel));
+  }
+
+  @override
+  Future<ShoppingListItemModel?> findById(int id) async {
+    final shoppingItem = await _itemDao.findById(id);
+    if (shoppingItem == null) {
       return null;
     }
-    return _mapToModel(budget);
+    return _mapToModel(shoppingItem);
   }
 
   @override
-  Future<BudgetModel?> findByTripId(int tripId) async {
-    final budget = await _budgetDao.findByTripId(tripId);
-    if (budget == null) {
-      return null;
-    }
-    return _mapToModel(budget);
+  Future<List<ShoppingListItemModel>> findAllByTripId(int tripId) async {
+    final items = await _itemDao.findAllByTripId(tripId);
+    return items.map((e) => _mapToModel(e)).toList();
   }
 
-  @override
-  Future<void> create(BudgetModel budgetModel) {
-    return _budgetDao.create(_mapToEntity(budgetModel));
+  ShoppingListItemModel _mapToModel(ShoppingListItem shoppingItem) {
+    return ShoppingListItemModel(
+        id: shoppingItem.id,
+        amount: Decimal.parse(shoppingItem.amount),
+        tripId: shoppingItem.tripId,
+        name: shoppingItem.name,
+        comment: shoppingItem.comment);
   }
 
-  @override
-  Future<void> update(BudgetModel budgetModel) {
-    return _budgetDao.update(_mapToEntity(budgetModel));
-  }
-
-  BudgetModel _mapToModel(Budget budget) {
-    return BudgetModel(
-      id: budget.id,
-      amount: Decimal.parse(budget.amount),
-      tripId: budget.tripId,
-    );
-  }
-
-  Budget _mapToEntity(BudgetModel model) {
-    return Budget(
-      id: model.id,
-      amount: model.amount.toString(),
-      tripId: model.tripId,
-    );
+  ShoppingListItem _mapToEntity(ShoppingListItemModel model) {
+    return ShoppingListItem(
+        id: model.id,
+        amount: model.amount.toString(),
+        tripId: model.tripId,
+        name: model.name,
+        comment: model.comment);
   }
 }

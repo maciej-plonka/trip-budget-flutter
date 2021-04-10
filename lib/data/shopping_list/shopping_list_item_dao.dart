@@ -10,8 +10,8 @@ abstract class ShoppingListItemDao {
   Future<List<ShoppingListItem>> findAllByTripId(int tripId);
 
   @Insert(onConflict: OnConflictStrategy.fail)
-  Future<void> create(ShoppingListItem budget);
+  Future<void> create(ShoppingListItem shoppingListItem);
 
   @Update(onConflict: OnConflictStrategy.fail)
-  Future<void> update(ShoppingListItem budget);
+  Future<void> update(ShoppingListItem shoppingListItem);
 }
