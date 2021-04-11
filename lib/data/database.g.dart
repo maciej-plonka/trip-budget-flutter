@@ -64,7 +64,7 @@ class _$AppDatabase extends AppDatabase {
 
   BudgetDao? _budgetDaoInstance;
 
-  ShoppingListItemDao? _shoppingListItemDaoInstance;
+  ShoppingItemDao? _shoppingItemDaoInstance;
 
   Future<sqflite.Database> open(String path, List<Migration> migrations,
       [Callback? callback]) async {
@@ -88,7 +88,7 @@ class _$AppDatabase extends AppDatabase {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `Budget` (`id` INTEGER, `tripId` INTEGER NOT NULL, `amount` TEXT NOT NULL, PRIMARY KEY (`id`))');
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `ShoppingListItem` (`id` INTEGER, `tripId` INTEGER NOT NULL, `amount` TEXT NOT NULL, `name` TEXT NOT NULL, `comment` TEXT NOT NULL, PRIMARY KEY (`id`))');
+            'CREATE TABLE IF NOT EXISTS `ShoppingItem` (`id` INTEGER, `tripId` INTEGER NOT NULL, `amount` TEXT NOT NULL, `name` TEXT NOT NULL, `comment` TEXT NOT NULL, PRIMARY KEY (`id`))');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -107,9 +107,9 @@ class _$AppDatabase extends AppDatabase {
   }
 
   @override
-  ShoppingListItemDao get shoppingListItemDao {
-    return _shoppingListItemDaoInstance ??=
-        _$ShoppingListItemDao(database, changeListener);
+  ShoppingItemDao get shoppingItemDao {
+    return _shoppingItemDaoInstance ??=
+        _$ShoppingItemDao(database, changeListener);
   }
 }
 
@@ -250,24 +250,24 @@ class _$BudgetDao extends BudgetDao {
   }
 }
 
-class _$ShoppingListItemDao extends ShoppingListItemDao {
-  _$ShoppingListItemDao(this.database, this.changeListener)
+class _$ShoppingItemDao extends ShoppingItemDao {
+  _$ShoppingItemDao(this.database, this.changeListener)
       : _queryAdapter = QueryAdapter(database),
-        _shoppingListItemInsertionAdapter = InsertionAdapter(
+        _shoppingItemInsertionAdapter = InsertionAdapter(
             database,
-            'ShoppingListItem',
-            (ShoppingListItem item) => <String, Object?>{
+            'ShoppingItem',
+            (ShoppingItem item) => <String, Object?>{
                   'id': item.id,
                   'tripId': item.tripId,
                   'amount': item.amount,
                   'name': item.name,
                   'comment': item.comment
                 }),
-        _shoppingListItemUpdateAdapter = UpdateAdapter(
+        _shoppingItemUpdateAdapter = UpdateAdapter(
             database,
-            'ShoppingListItem',
+            'ShoppingItem',
             ['id'],
-            (ShoppingListItem item) => <String, Object?>{
+            (ShoppingItem item) => <String, Object?>{
                   'id': item.id,
                   'tripId': item.tripId,
                   'amount': item.amount,
@@ -281,15 +281,15 @@ class _$ShoppingListItemDao extends ShoppingListItemDao {
 
   final QueryAdapter _queryAdapter;
 
-  final InsertionAdapter<ShoppingListItem> _shoppingListItemInsertionAdapter;
+  final InsertionAdapter<ShoppingItem> _shoppingItemInsertionAdapter;
 
-  final UpdateAdapter<ShoppingListItem> _shoppingListItemUpdateAdapter;
+  final UpdateAdapter<ShoppingItem> _shoppingItemUpdateAdapter;
 
   @override
-  Future<ShoppingListItem?> findById(int id) async {
-    return _queryAdapter.query('SELECT * FROM ShoppingListItem WHERE id = ?',
+  Future<ShoppingItem?> findById(int id) async {
+    return _queryAdapter.query('SELECT * FROM ShoppingItem WHERE id = ?',
         arguments: [id],
-        mapper: (Map<String, Object?> row) => ShoppingListItem(
+        mapper: (Map<String, Object?> row) => ShoppingItem(
             id: row['id'] as int?,
             tripId: row['tripId'] as int,
             amount: row['amount'] as String,
@@ -298,11 +298,11 @@ class _$ShoppingListItemDao extends ShoppingListItemDao {
   }
 
   @override
-  Future<List<ShoppingListItem>> findAllByTripId(int tripId) async {
+  Future<List<ShoppingItem>> findAllByTripId(int tripId) async {
     return _queryAdapter.queryList(
-        'SELECT * FROM ShoppingListItem WHERE tripId = ?',
+        'SELECT * FROM ShoppingItem WHERE tripId = ?',
         arguments: [tripId],
-        mapper: (Map<String, Object?> row) => ShoppingListItem(
+        mapper: (Map<String, Object?> row) => ShoppingItem(
             id: row['id'] as int?,
             tripId: row['tripId'] as int,
             amount: row['amount'] as String,
@@ -311,14 +311,14 @@ class _$ShoppingListItemDao extends ShoppingListItemDao {
   }
 
   @override
-  Future<void> create(ShoppingListItem shoppingListItem) async {
-    await _shoppingListItemInsertionAdapter.insert(
-        shoppingListItem, OnConflictStrategy.fail);
+  Future<void> create(ShoppingItem shoppingItem) async {
+    await _shoppingItemInsertionAdapter.insert(
+        shoppingItem, OnConflictStrategy.fail);
   }
 
   @override
-  Future<void> update(ShoppingListItem shoppingListItem) async {
-    await _shoppingListItemUpdateAdapter.update(
-        shoppingListItem, OnConflictStrategy.fail);
+  Future<void> update(ShoppingItem shoppingItem) async {
+    await _shoppingItemUpdateAdapter.update(
+        shoppingItem, OnConflictStrategy.fail);
   }
 }

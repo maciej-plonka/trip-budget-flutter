@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trip_planner/domain/budget/repository/budget_model.dart';
 import 'package:trip_planner/presentation/budget/bloc/budget_by_trip_id/budget_by_trip_id_cubit.dart';
 import 'package:trip_planner/presentation/budget/bloc/budget_by_trip_id/budget_by_trip_id_state.dart';
-import 'package:trip_planner/presentation/budget/pages/budget_page_scaffold.dart';
+import 'package:trip_planner/presentation/budget/pages/budget_scaffold.dart';
 import 'package:trip_planner/presentation/linear_gradients.dart';
 import 'package:trip_planner/presentation/widgets/button/gradient_button.dart';
 import 'package:trip_planner/presentation/router/navigator_state_extensions.dart';
@@ -16,7 +16,7 @@ class BudgetHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BudgetPageScaffold(
+    return BudgetScaffold(
       titleText: "Budget home",
       body: Container(
         padding: const EdgeInsets.all(16.0),

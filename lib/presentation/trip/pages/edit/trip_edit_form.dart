@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:trip_planner/dependencies/dependencies.dart';
 import 'package:trip_planner/domain/trip/commands/update/trip_update_command.dart';
 import 'package:trip_planner/domain/trip/commands/update/trip_update_command_handler.dart';
 import 'package:trip_planner/domain/trip/repository/trip_model.dart';
@@ -12,20 +11,20 @@ import 'package:trip_planner/presentation/widgets/form/image_picker_form_field.d
 class TripEditForm extends StatefulWidget {
   final Function onUpdated;
   final TripModel trip;
+  final TripUpdateCommandHandler updateCommandHandler;
 
   const TripEditForm(
-      {Key? key, required this.onUpdated, required this.trip})
+      {Key? key,
+      required this.onUpdated,
+      required this.trip,
+      required this.updateCommandHandler})
       : super(key: key);
 
   @override
-  _TripEditFormState createState() => _TripEditFormState(onUpdated, trip);
+  _TripEditFormState createState() => _TripEditFormState();
 }
 
 class _TripEditFormState extends State<TripEditForm> {
-  final Function _onUpdated;
-  final TripModel _currentTrip;
-  final TripUpdateCommandHandler _updateTripHandler = dependencies();
-
   final _formKey = GlobalKey<FormState>();
   final _startDateKey = GlobalKey<FormFieldState<DateTime>>();
 
@@ -33,8 +32,6 @@ class _TripEditFormState extends State<TripEditForm> {
   String? _imageUrl;
   DateTime? _startDate;
   DateTime? _endDate;
-
-  _TripEditFormState(this._onUpdated, this._currentTrip);
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +42,7 @@ class _TripEditFormState extends State<TripEditForm> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ImagePickerFormField(
-              initialValue: _currentTrip.imageUrl,
+              initialValue: widget.trip.imageUrl,
               height: 180,
               onSaved: (image) => _imageUrl = image,
             ),
@@ -55,7 +52,7 @@ class _TripEditFormState extends State<TripEditForm> {
                 children: [
                   TextFormField(
                     validator: _nameValidator,
-                    initialValue: _currentTrip.name,
+                    initialValue: widget.trip.name,
                     onSaved: (value) => _name = value,
                     decoration: const InputDecoration(
                       labelText: "Name",
@@ -70,12 +67,12 @@ class _TripEditFormState extends State<TripEditForm> {
                   ),
                   DatePickerFormField(
                       key: _startDateKey,
-                      initialValue: _currentTrip.startDate,
+                      initialValue: widget.trip.startDate,
                       onSaved: (startDate) => _startDate = startDate,
                       label: "Start Date",
                       validator: _startDateValidator),
                   DatePickerFormField(
-                      initialValue: _currentTrip.endDate,
+                      initialValue: widget.trip.endDate,
                       onSaved: (endDate) => _endDate = endDate,
                       label: "End Date",
                       validator: _createEndDateValidator(_startDateKey)),
@@ -112,18 +109,18 @@ class _TripEditFormState extends State<TripEditForm> {
 
   void _handleSubmit() async {
     final formState = _formKey.currentState;
-    if(formState == null) return;
+    if (formState == null) return;
     final valid = formState.validate();
     if (!valid) return;
     formState.save();
     final updateTrip = TripUpdateCommand(
-        id: _currentTrip.id!,
+        id: widget.trip.id!,
         name: _name!,
         startDate: _startDate!,
         endDate: _endDate!,
         imageUrl: _imageUrl);
-    await _updateTripHandler.updateTrip(updateTrip);
-    _onUpdated.call();
+    await widget.updateCommandHandler.updateTrip(updateTrip);
+    widget.onUpdated.call();
   }
 }
 

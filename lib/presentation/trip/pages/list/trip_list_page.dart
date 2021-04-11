@@ -6,7 +6,7 @@ import 'package:trip_planner/presentation/router/navigator_state_extensions.dart
 import 'package:trip_planner/presentation/trip/bloc/trip_list/trip_list_cubit.dart';
 import 'package:trip_planner/presentation/trip/bloc/trip_list/trip_list_state.dart';
 import 'package:trip_planner/presentation/trip/pages/list/trip_list_card.dart';
-import 'package:trip_planner/presentation/trip/trip_page_scaffold.dart';
+import 'package:trip_planner/presentation/trip/trip_scaffold.dart';
 import 'package:trip_planner/presentation/widgets/button/gradient_floating_action_button.dart';
 
 class TripListPage extends StatelessWidget {
@@ -14,7 +14,7 @@ class TripListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TripPageScaffold(
+    return TripScaffold(
       titleText: "Trip planner",
       body: Container(
         child: BlocBuilder<TripListCubit, TripListState>(

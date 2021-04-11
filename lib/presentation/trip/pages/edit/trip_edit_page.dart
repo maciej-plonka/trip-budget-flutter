@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:trip_planner/dependencies/dependencies.dart';
+import 'package:trip_planner/domain/trip/commands/update/trip_update_command_handler.dart';
 import 'package:trip_planner/presentation/trip/bloc/trip_by_id/trip_by_id_cubit.dart';
 import 'package:trip_planner/presentation/trip/bloc/trip_by_id/trip_by_id_state.dart';
 import 'package:trip_planner/presentation/trip/pages/edit/trip_edit_form.dart';
-import 'package:trip_planner/presentation/trip/trip_page_scaffold.dart';
+import 'package:trip_planner/presentation/trip/trip_scaffold.dart';
 
 class TripEditPage extends StatelessWidget {
   final int tripId;
-  final TripByIdCubit _tripByIdCubit = dependencies();
+  final TripByIdCubit tripByIdCubit;
+  final TripUpdateCommandHandler updateCommandHandler;
 
-  TripEditPage({Key? key, required this.tripId}) : super(key: key);
+  const TripEditPage(
+      {Key? key,
+      required this.tripId,
+      required this.tripByIdCubit,
+      required this.updateCommandHandler})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return TripPageScaffold(
+    return TripScaffold(
       titleText: "Update trip",
       body: BlocBuilder<TripByIdCubit, TripByIdState>(
-        bloc: _tripByIdCubit..getTripById(tripId),
+        bloc: tripByIdCubit..getTripById(tripId),
         builder: (context, state) {
           if (state is TripByIdError) {
             return _buildError(state.message);
@@ -26,6 +32,7 @@ class TripEditPage extends StatelessWidget {
             return TripEditForm(
               trip: state.trip,
               onUpdated: () => Navigator.of(context).pop(),
+              updateCommandHandler: updateCommandHandler,
             );
           }
           return _buildLoading();

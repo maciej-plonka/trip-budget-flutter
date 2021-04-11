@@ -21,7 +21,7 @@ class TripDetailsModules extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _budgetModule(context),
-              _shoppingListModule(context)
+              _shoppingModule(context)
             ],
           )
         ]),
@@ -49,10 +49,10 @@ class TripDetailsModules extends StatelessWidget {
     );
   }
 
-  Widget _shoppingListModule(BuildContext context) {
+  Widget _shoppingModule(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushShoppingListHome(tripId);
+        Navigator.of(context).pushShoppingHome(tripId);
       },
       child: _TripDetailsSingleModule(
           gradient: LinearGradients.purple,

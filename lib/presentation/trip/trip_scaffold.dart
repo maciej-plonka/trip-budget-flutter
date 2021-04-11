@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 const titleStyle = const TextStyle(color: Colors.black);
 
-class TripPageScaffold extends StatelessWidget {
+class TripScaffold extends StatelessWidget {
   final String titleText;
   final Widget body;
   final Widget? floatingActionButton;
   final VoidCallback? onConfig;
 
-  const TripPageScaffold(
+  const TripScaffold(
       {required this.titleText,
       required this.body,
       this.floatingActionButton,

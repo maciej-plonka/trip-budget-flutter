@@ -1,10 +1,10 @@
 import 'package:equatable/equatable.dart';
 
-abstract class ShoppingListItemCreateCommandResult extends Equatable {
-  const ShoppingListItemCreateCommandResult();
+abstract class ShoppingItemCreateCommandResult extends Equatable {
+  const ShoppingItemCreateCommandResult();
 }
 
-class Success extends ShoppingListItemCreateCommandResult {
+class Success extends ShoppingItemCreateCommandResult {
   static int version = 1;
 
   @override
@@ -12,7 +12,7 @@ class Success extends ShoppingListItemCreateCommandResult {
 }
 
 
-class Errors extends ShoppingListItemCreateCommandResult {
+class Errors extends ShoppingItemCreateCommandResult {
   final List<String> messages;
   static int _version = 2;
 

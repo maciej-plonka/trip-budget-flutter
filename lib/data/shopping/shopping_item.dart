@@ -1,7 +1,7 @@
 import 'package:floor/floor.dart';
 
 @entity
-class ShoppingListItem {
+class ShoppingItem {
   @primaryKey
   final int? id;
   final int tripId;
@@ -9,7 +9,7 @@ class ShoppingListItem {
   final String name;
   final String comment;
 
-  ShoppingListItem({
+  ShoppingItem({
     this.id,
     required this.tripId,
     required this.amount,

@@ -1,19 +1,19 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
-import 'package:trip_planner/domain/shopping_list/commands/item/create/shopping_list_item_create_command.dart';
-import 'package:trip_planner/domain/shopping_list/commands/item/create/shopping_list_item_create_command_handler.dart';
-import 'package:trip_planner/domain/shopping_list/commands/item/create/shopping_list_item_create_command_handler_impl.dart';
-import 'package:trip_planner/domain/shopping_list/commands/item/create/shopping_list_item_create_command_result.dart';
-import 'package:trip_planner/domain/shopping_list/repository/shopping_list_repository.dart';
+import 'package:trip_planner/domain/shopping/commands/item/create/shopping_item_create_command.dart';
+import 'package:trip_planner/domain/shopping/commands/item/create/shopping_item_create_command_handler.dart';
+import 'package:trip_planner/domain/shopping/commands/item/create/shopping_item_create_command_handler_impl.dart';
+import 'package:trip_planner/domain/shopping/commands/item/create/shopping_item_create_command_result.dart';
+import 'package:trip_planner/domain/shopping/repository/shopping_repository.dart';
 
-import 'shopping_list_item_create_command_handler_impl_test.mocks.dart';
+import 'shopping_item_create_command_handler_impl_test.mocks.dart';
 
-@GenerateMocks([ShoppingListRepository])
+@GenerateMocks([ShoppingRepository])
 void main() {
-  group("ShoppingListItemCreateCommandHandlerImpl handle()", () {
+  group("ShoppingItemCreateCommandHandlerImpl handle()", () {
     test("should return errors when amount is zero", () async {
-      final repository = MockShoppingListRepository();
+      final repository = MockShoppingRepository();
       final classUnderTest = _classUnderTest(repository);
       final commandWithZeroAmount = _sampleCommand(amount: Decimal.zero);
 
@@ -23,7 +23,7 @@ void main() {
       });
 
     test("should return errors when amount is negative", () async {
-      final repository = MockShoppingListRepository();
+      final repository = MockShoppingRepository();
       final classUnderTest = _classUnderTest(repository);
       final commandWithNegativeAmount = _sampleCommand(amount: Decimal.parse("-1"));
 
@@ -33,7 +33,7 @@ void main() {
     });
 
     test("should return errors when name is empty", () async {
-      final repository = MockShoppingListRepository();
+      final repository = MockShoppingRepository();
       final classUnderTest = _classUnderTest(repository);
       final commandWithEmptyName = _sampleCommand(name: "");
 
@@ -43,7 +43,7 @@ void main() {
     });
 
     test("should return errors when name is blank", () async {
-      final repository = MockShoppingListRepository();
+      final repository = MockShoppingRepository();
       final classUnderTest = _classUnderTest(repository);
       final commandWithBlankName = _sampleCommand(name: "       ");
 
@@ -53,7 +53,7 @@ void main() {
     });
 
     test("should return Success when command is valid", () async {
-      final repository = MockShoppingListRepository();
+      final repository = MockShoppingRepository();
       final classUnderTest = _classUnderTest(repository);
       final validCommand = _sampleCommand();
 
@@ -63,7 +63,7 @@ void main() {
     });
 
     test("should return Success with 2 messages when both name and amount are invalid", () async {
-      final repository = MockShoppingListRepository();
+      final repository = MockShoppingRepository();
       final classUnderTest = _classUnderTest(repository);
       final invalidCommand = _sampleCommand(
         name: "",
@@ -79,17 +79,18 @@ void main() {
   });
 }
 
-ShoppingListItemCreateCommand _sampleCommand({
+
+ShoppingItemCreateCommand _sampleCommand({
   int tripId = 1,
   Decimal? amount,
   String name = "Valid name",
   String comment = "",
 }) {
   final finalAmount = amount ?? Decimal.one;
-  return ShoppingListItemCreateCommand(tripId: tripId, amount: finalAmount, name: name, comment: comment);
+  return ShoppingItemCreateCommand(tripId: tripId, amount: finalAmount, name: name, comment: comment);
 }
 
 
-ShoppingListItemCreateCommandHandler _classUnderTest(
-        ShoppingListRepository repository) =>
-    ShoppingListItemCreateCommandHandlerImpl(repository);
+ShoppingItemCreateCommandHandler _classUnderTest(
+        ShoppingRepository repository) =>
+    ShoppingItemCreateCommandHandlerImpl(repository);

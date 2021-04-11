@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:trip_planner/presentation/linear_gradients.dart';
 
-class BudgetPageScaffold extends StatelessWidget {
+class BudgetScaffold extends StatelessWidget {
   final Widget body;
   final String titleText;
 
-  const BudgetPageScaffold({
+  const BudgetScaffold({
     Key? key,
     required this.titleText,
     required this.body,
@@ -17,7 +17,7 @@ class BudgetPageScaffold extends StatelessWidget {
       appBar: AppBar(
         title: Text(titleText, style: TextStyle(color: Colors.white)),
         flexibleSpace: Container(
-          decoration: const BoxDecoration(gradient: LinearGradients.orange),
+          decoration: const BoxDecoration(gradient: LinearGradients.purple),
         ),
       ),
       body: body,

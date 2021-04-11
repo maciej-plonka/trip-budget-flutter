@@ -6,7 +6,7 @@ import 'package:trip_planner/presentation/trip/bloc/trip_by_id/trip_by_id_cubit.
 import 'package:trip_planner/presentation/trip/bloc/trip_by_id/trip_by_id_state.dart';
 import 'package:trip_planner/presentation/trip/pages/details/trip_details_card.dart';
 import 'package:trip_planner/presentation/trip/pages/details/trip_details_modules.dart';
-import 'package:trip_planner/presentation/trip/trip_page_scaffold.dart';
+import 'package:trip_planner/presentation/trip/trip_scaffold.dart';
 import 'package:trip_planner/presentation/router/navigator_state_extensions.dart';
 
 class TripDetailsPage extends StatelessWidget {
@@ -17,7 +17,7 @@ class TripDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TripPageScaffold(
+    return TripScaffold(
       titleText: "Trip details",
       onConfig: () => Navigator.of(context).pushTripEdit(tripId),
       body: Padding(
