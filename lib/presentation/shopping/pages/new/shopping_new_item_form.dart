@@ -59,7 +59,7 @@ class _ShoppingNewItemFormState extends State<ShoppingNewItemForm> {
               TextFormField(
                 validator: _validateAmount,
                 onSaved: (value) => _amount = Decimal.parse(value!),
-                initialValue: "",
+                initialValue: "0.0",
                 decoration: const InputDecoration(
                   labelText: "Amount",
                   icon: const Padding(
