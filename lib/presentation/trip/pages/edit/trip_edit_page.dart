@@ -1,5 +1,8 @@
+import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trip_planner/dependencies/dependencies.dart';
 import 'package:trip_planner/domain/trip/commands/update/trip_update_command_handler.dart';
 import 'package:trip_planner/presentation/trip/bloc/trip_by_id/trip_by_id_cubit.dart';
 import 'package:trip_planner/presentation/trip/bloc/trip_by_id/trip_by_id_state.dart';
@@ -8,22 +11,26 @@ import 'package:trip_planner/presentation/trip/trip_scaffold.dart';
 
 class TripEditPage extends StatelessWidget {
   final int tripId;
-  final TripByIdCubit tripByIdCubit;
+  final TripByIdCubit cubit;
   final TripUpdateCommandHandler updateCommandHandler;
+  final void Function()? onEdited;
 
-  const TripEditPage(
+  TripEditPage(
       {Key? key,
-      required this.tripId,
-      required this.tripByIdCubit,
-      required this.updateCommandHandler})
-      : super(key: key);
+      @pathParam required this.tripId,
+      TripByIdCubit? cubit,
+      TripUpdateCommandHandler? updateCommandHandler,
+      this.onEdited})
+      : this.cubit = cubit ?? dependencies(),
+        this.updateCommandHandler = updateCommandHandler ?? dependencies(),
+        super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TripScaffold(
       titleText: "Update trip",
       body: BlocBuilder<TripByIdCubit, TripByIdState>(
-        bloc: tripByIdCubit..getTripById(tripId),
+        bloc: cubit..getTripById(tripId),
         builder: (context, state) {
           if (state is TripByIdError) {
             return _buildError(state.message);
@@ -31,7 +38,10 @@ class TripEditPage extends StatelessWidget {
           if (state is TripByIdLoaded) {
             return TripEditForm(
               trip: state.trip,
-              onUpdated: () => Navigator.of(context).pop(),
+              onUpdated: () {
+                onEdited?.call();
+                context.router.pop();
+              },
               updateCommandHandler: updateCommandHandler,
             );
           }

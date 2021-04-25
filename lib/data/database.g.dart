@@ -161,20 +161,20 @@ class _$TripDao extends TripDao {
 
   @override
   Future<Trip?> findById(int tripId) async {
-    return _queryAdapter.query('SELECT * FROM Trip where id = ?',
-        arguments: [tripId],
+    return _queryAdapter.query('SELECT * FROM Trip where id = ?1',
         mapper: (Map<String, Object?> row) => Trip(
             id: row['id'] as int?,
             name: row['name'] as String,
             startDateTime: row['startDateTime'] as int,
             endDateTime: row['endDateTime'] as int,
-            imageUrl: row['imageUrl'] as String?));
+            imageUrl: row['imageUrl'] as String?),
+        arguments: [tripId]);
   }
 
   @override
   Future<void> removeById(int tripId) async {
     await _queryAdapter
-        .queryNoReturn('DELETE FROM Trip where id = ?', arguments: [tripId]);
+        .queryNoReturn('DELETE FROM Trip where id = ?1', arguments: [tripId]);
   }
 
   @override
@@ -221,22 +221,22 @@ class _$BudgetDao extends BudgetDao {
 
   @override
   Future<Budget?> findById(int budgetId) async {
-    return _queryAdapter.query('SELECT * FROM Budget where id = ?',
-        arguments: [budgetId],
+    return _queryAdapter.query('SELECT * FROM Budget where id = ?1',
         mapper: (Map<String, Object?> row) => Budget(
             id: row['id'] as int?,
             tripId: row['tripId'] as int,
-            amount: row['amount'] as String));
+            amount: row['amount'] as String),
+        arguments: [budgetId]);
   }
 
   @override
   Future<Budget?> findByTripId(int tripId) async {
-    return _queryAdapter.query('SELECT * FROM Budget where tripId = ?',
-        arguments: [tripId],
+    return _queryAdapter.query('SELECT * FROM Budget where tripId = ?1',
         mapper: (Map<String, Object?> row) => Budget(
             id: row['id'] as int?,
             tripId: row['tripId'] as int,
-            amount: row['amount'] as String));
+            amount: row['amount'] as String),
+        arguments: [tripId]);
   }
 
   @override
@@ -287,27 +287,27 @@ class _$ShoppingItemDao extends ShoppingItemDao {
 
   @override
   Future<ShoppingItem?> findById(int id) async {
-    return _queryAdapter.query('SELECT * FROM ShoppingItem WHERE id = ?',
-        arguments: [id],
+    return _queryAdapter.query('SELECT * FROM ShoppingItem WHERE id = ?1',
         mapper: (Map<String, Object?> row) => ShoppingItem(
             id: row['id'] as int?,
             tripId: row['tripId'] as int,
             amount: row['amount'] as String,
             name: row['name'] as String,
-            comment: row['comment'] as String));
+            comment: row['comment'] as String),
+        arguments: [id]);
   }
 
   @override
   Future<List<ShoppingItem>> findAllByTripId(int tripId) async {
     return _queryAdapter.queryList(
-        'SELECT * FROM ShoppingItem WHERE tripId = ?',
-        arguments: [tripId],
+        'SELECT * FROM ShoppingItem WHERE tripId = ?1',
         mapper: (Map<String, Object?> row) => ShoppingItem(
             id: row['id'] as int?,
             tripId: row['tripId'] as int,
             amount: row['amount'] as String,
             name: row['name'] as String,
-            comment: row['comment'] as String));
+            comment: row['comment'] as String),
+        arguments: [tripId]);
   }
 
   @override

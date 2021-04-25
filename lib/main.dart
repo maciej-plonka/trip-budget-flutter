@@ -3,7 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:trip_planner/data/database_init.dart';
 import 'package:trip_planner/dependencies/dependencies.dart';
-import 'package:trip_planner/presentation/router/route_generator.dart';
+import 'package:trip_planner/presentation/router/app_router.gr.dart';
+
+final _appRouter = AppRouter();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,7 +17,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+
+    return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -33,8 +36,8 @@ class MyApp extends StatelessWidget {
         ),
         backgroundColor: Color(0xFFB5B5B5),
       ),
-      initialRoute: Routes.tripList,
-      onGenerateRoute: RouteGenerator.generateRoute,
+      routerDelegate: _appRouter.delegate(initialRoutes: [TripRoute()]),
+      routeInformationParser: _appRouter.defaultRouteParser(),
     );
   }
 }

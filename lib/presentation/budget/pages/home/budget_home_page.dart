@@ -1,21 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:trip_planner/dependencies/dependencies.dart';
 import 'package:trip_planner/domain/budget/repository/budget_model.dart';
 import 'package:trip_planner/presentation/budget/bloc/budget_by_trip_id/budget_by_trip_id_cubit.dart';
 import 'package:trip_planner/presentation/budget/bloc/budget_by_trip_id/budget_by_trip_id_state.dart';
 import 'package:trip_planner/presentation/budget/pages/budget_scaffold.dart';
+import 'package:trip_planner/presentation/trip_id.dart';
 import 'package:trip_planner/presentation/linear_gradients.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:trip_planner/presentation/router/app_router.gr.dart';
 import 'package:trip_planner/presentation/widgets/button/gradient_button.dart';
-import 'package:trip_planner/presentation/router/navigator_state_extensions.dart';
 
 class BudgetHomePage extends StatelessWidget {
-  final int tripId;
   final BudgetByTripIdCubit cubit;
+  final int? tripId;
 
-  BudgetHomePage({required this.tripId, required this.cubit});
+  BudgetHomePage({this.tripId, BudgetByTripIdCubit? cubit})
+      : this.cubit = cubit ?? dependencies();
 
   @override
   Widget build(BuildContext context) {
+    final tripId = this.tripId ?? context.read<TripId>().value;
     return BudgetScaffold(
       titleText: "Budget home",
       body: Container(
@@ -24,7 +29,7 @@ class BudgetHomePage extends StatelessWidget {
           bloc: cubit..getByTripId(tripId),
           builder: (context, state) {
             if (state is BudgetByTripIdNotFound) {
-              return _buildNotFound(context);
+              return _buildNotFound(context, tripId);
             }
             if (state is BudgetByTripIdError) {
               return _buildError(state.message);
@@ -39,7 +44,7 @@ class BudgetHomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildNotFound(BuildContext context) {
+  Widget _buildNotFound(BuildContext context, int tripId) {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -48,11 +53,17 @@ class BudgetHomePage extends StatelessWidget {
           const SizedBox(height: 16.0),
           GradientButton(
             gradient: LinearGradients.primary,
-              child: const Center(child: Text("Create budget", style: const TextStyle(color: Colors.white),)),
-              onPressed: () async {
-                await Navigator.of(context).pushBudgetNew(tripId);
-                await cubit.getByTripId(tripId);
-              },
+            child: const Center(
+                child: Text(
+              "Create budget",
+              style: const TextStyle(color: Colors.white),
+            )),
+            onPressed: () async {
+              context.router.navigate(BudgetNewRoute(
+                tripId: tripId,
+                onCreated: () => cubit.getByTripId(tripId),
+              ));
+            },
           )
         ],
       ),

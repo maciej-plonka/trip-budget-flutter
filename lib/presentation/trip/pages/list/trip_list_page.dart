@@ -1,8 +1,9 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:trip_planner/dependencies/dependencies.dart';
 import 'package:trip_planner/domain/trip/repository/trip_model.dart';
-import 'package:trip_planner/presentation/router/navigator_state_extensions.dart';
+import 'package:trip_planner/presentation/router/app_router.gr.dart';
 import 'package:trip_planner/presentation/trip/bloc/trip_list/trip_list_cubit.dart';
 import 'package:trip_planner/presentation/trip/bloc/trip_list/trip_list_state.dart';
 import 'package:trip_planner/presentation/trip/pages/list/trip_list_card.dart';
@@ -32,8 +33,9 @@ class TripListPage extends StatelessWidget {
       ),
       floatingActionButton: GradientFloatingActionButton.primary(
         onPressed: () async {
-          await Navigator.of(context).pushTripNew();
-          await _tripListCubit.getAll();
+          await AutoRouter.of(context).push(TripNewRoute(
+            onCreated: () => _tripListCubit.getAll()
+          ));
         },
       ),
     );
@@ -52,7 +54,7 @@ class TripListPage extends StatelessWidget {
           padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
           child: GestureDetector(
             onTap: () {
-              Navigator.of(context).pushTripDetails(trip.id!);
+              AutoRouter.of(context).navigate(TripDetailsRoute(tripId: trip.id!));
             },
             child: TripListCard(trip: trip),
           ),
